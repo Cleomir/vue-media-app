@@ -1,13 +1,17 @@
 import express, { Router } from "express";
 
-import helloWorld from "./helloWorld";
+import cloudinaryRoutes from "./cloudinary";
+import pexelsRoutes from "./pexels";
+import unsplashRoutes from "./unsplash";
 
 /**
- * Default Express router
+ * Express router
  */
 const router: Router = express.Router();
 
-// mount HelloWorld route
-router.get("/", helloWorld);
+// Mount /api routes
+router.use("/cloudinary", cloudinaryRoutes);
+router.use("/pexels", pexelsRoutes);
+router.use("/unsplash", unsplashRoutes);
 
 export default router;
