@@ -19,6 +19,7 @@
   "dependencies": {
     "@microsoft/tsdoc": "^0.12.21",
     "axios": "^0.21.0",
+    "cloudinary": "^1.23.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^4.2.0",
