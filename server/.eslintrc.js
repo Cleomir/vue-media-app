@@ -11,4 +11,9 @@ module.exports = {
   env: {
     node: true,
   },
+  settings: {
+    jest: {
+      version: 26,
+    },
+  },
 };
