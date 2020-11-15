@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
+import { ValidationResult } from "joi";
 
 import logger, { logObject } from "../../logger";
 import { env } from "../../config/envVariables";
 import axiosRequest from "../../helpers/axios";
-import {
-  INTERNAL_SERVER_ERROR,
-  NO_SEARCH_KEYWORD,
-} from "../../config/responseErrorMessages";
+import { INTERNAL_SERVER_ERROR } from "../../config/responseErrorMessages";
+import RequestValidator from "../../validation/RequestValidator";
 
 /**
  * Search pictures by the given keyword
@@ -18,18 +17,21 @@ const searchPicturesByKeyword = async (
   res: Response
 ): Promise<Response> => {
   const { id, query } = req;
-  if (
-    !query.query ||
-    (typeof query.query === "string" && query.query.trim().length === 0)
-  ) {
-    return res.status(400).json({ success: false, message: NO_SEARCH_KEYWORD });
-  }
-
   const requestParams = {
     query: query.query,
     page: query.page || 1,
     per_page: query.per_page || 10,
   };
+  const validation: ValidationResult = RequestValidator.validateSearchParams(
+    requestParams.query as string,
+    requestParams.page as number,
+    requestParams.per_page as number
+  );
+  if (validation.error) {
+    logger.error(`[NODE][${req.id}] Response status 400`);
+    return res.status(400).json({ message: validation.error.message });
+  }
+
   const apiUrl = "https://api.unsplash.com/search/photos";
   logger.info(`[NODE][${id}] Request to ${apiUrl}`);
 
