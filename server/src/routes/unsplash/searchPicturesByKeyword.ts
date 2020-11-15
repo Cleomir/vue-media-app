@@ -16,6 +16,7 @@ const searchPicturesByKeyword = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
+  // validate request
   const { id, query } = req;
   const requestParams = {
     query: query.query,
@@ -32,9 +33,9 @@ const searchPicturesByKeyword = async (
     return res.status(400).json({ message: validation.error.message });
   }
 
+  // send request to Unsplash
   const apiUrl = "https://api.unsplash.com/search/photos";
   logger.info(`[NODE][${id}] Request to ${apiUrl}`);
-
   try {
     const response: Record<string, unknown> = await axiosRequest({
       url: apiUrl,

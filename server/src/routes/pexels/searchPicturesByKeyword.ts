@@ -16,6 +16,7 @@ const searchPicturesByKeyword = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
+  // validate request
   const { id, query } = req;
   const requestParams = {
     query: query.query,
@@ -32,6 +33,7 @@ const searchPicturesByKeyword = async (
     return res.status(400).json({ message: validation.error.message });
   }
 
+  // send request to Pexels
   const apiUrl = "https://api.pexels.com/v1/search";
   logger.info(`[NODE][${id}] Request to ${apiUrl}`);
   try {

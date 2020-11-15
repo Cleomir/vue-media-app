@@ -13,6 +13,7 @@ import RequestValidator from "../../validation/RequestValidator";
  * @param res - Response object
  */
 const listPictures = async (req: Request, res: Response): Promise<Response> => {
+  // validate request
   const { id, query } = req;
   const requestParams = {
     page: query.page || 1,
@@ -27,9 +28,9 @@ const listPictures = async (req: Request, res: Response): Promise<Response> => {
     return res.status(400).json({ message: validation.error.message });
   }
 
+  // send request to Unsplash
   const apiUrl = "https://api.unsplash.com/photos";
   logger.info(`[NODE][${id}] Request to ${apiUrl}`);
-
   try {
     const response: Record<string, unknown> = await axiosRequest({
       url: apiUrl,
