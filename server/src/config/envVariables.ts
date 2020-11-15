@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import dotenv from "dotenv";
 
+import IEnvVariables from "../interfaces/IEnvVariables";
+
 dotenv.config({ path: ".env" });
 
-export const env: { [key: string]: string } = {
+export const env: IEnvVariables = {
   CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY!,
   CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET!,
   NODE_ENV: process.env.NODE_ENV!,
@@ -18,7 +20,7 @@ export const env: { [key: string]: string } = {
  */
 export const checkForUndefinedEnvVariables = (): void => {
   for (const key in env) {
-    if (!env[key]) {
+    if (!key) {
       throw new Error(`Env variable ${key} is undefined`);
     }
   }
