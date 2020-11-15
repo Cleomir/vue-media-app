@@ -16,4 +16,14 @@ export default class RequestValidator {
       per_page: this.perPage,
     }).validate({ query, page, per_page: perPage });
   }
+
+  public static validateListParams(
+    page: number,
+    perPage: number
+  ): ValidationResult {
+    return Joi.object({
+      page: this.page,
+      per_page: this.perPage,
+    }).validate({ page, per_page: perPage });
+  }
 }
