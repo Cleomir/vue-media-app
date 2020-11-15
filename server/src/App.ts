@@ -4,6 +4,7 @@ import { resolve } from "path";
 import history from "connect-history-api-fallback";
 
 import apiRoutes from "./routes";
+import requestLogger from './middleware/requestLogger'
 
 /**
  * Express instance
@@ -15,10 +16,12 @@ const publicPath: string = resolve(__dirname, "../../client/dist");
 app.use(express.json());
 app.use(helmet());
 app.use(express.static(publicPath));
+app.use(requestLogger());
+
 
 // root routes
-app.use("/", history());
 app.use("/api", apiRoutes);
+app.use("/", history());
 
 // 404 handler
 app.use((req: Request, res: Response) => {
