@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import axios, { AxiosResponse } from "axios";
 
 import logger, { logObject } from "../../logger";
 import { env } from "../../config/envVariables";
+import axiosRequest from "../../helpers/axios";
 import {
   INTERNAL_SERVER_ERROR,
   NO_SEARCH_KEYWORD,
@@ -18,7 +18,10 @@ const searchPicturesByKeyword = async (
   res: Response
 ): Promise<Response> => {
   const { id, query } = req;
-  if (!query.query) {
+  if (
+    !query.query ||
+    (typeof query.query === "string" && query.query.trim().length === 0)
+  ) {
     return res.status(400).json({ success: false, message: NO_SEARCH_KEYWORD });
   }
 
@@ -33,15 +36,17 @@ const searchPicturesByKeyword = async (
   logger.info(`[NODE][${id}] Request to ${apiUrl}`);
 
   try {
-    const response: AxiosResponse<any> = await axios.get(apiUrl, {
+    const response: Record<string, unknown> = await axiosRequest({
+      url: apiUrl,
+      method: "GET",
       headers: {
         Authorization: env.PEXELS_API_KEY,
       },
       params: requestParams,
     });
 
-    logObject("info", `[NODE][${id}] Response status 200`, response.data);
-    return res.status(200).json({ success: true, data: response.data });
+    logObject("info", `[NODE][${id}] Response status 200`, response);
+    return res.status(200).json({ success: true, data: response });
   } catch (error) {
     logObject("error", "[NODE] Response status 500", error);
     return res
