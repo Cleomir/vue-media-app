@@ -26,11 +26,9 @@ const searchPicturesByKeyword = async (
   }
 
   const requestParams = {
-    query: query.query || "",
-    orientation: query.orientation || "portrait",
+    query: query.query,
     page: query.page || 1,
     per_page: query.per_page || 15,
-    size: query.size || "small",
   };
   const apiUrl = "https://api.pexels.com/v1/search";
   logger.info(`[NODE][${id}] Request to ${apiUrl}`);
