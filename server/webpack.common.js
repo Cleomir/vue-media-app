@@ -1,6 +1,3 @@
-/* eslint-disable no-undef */
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 const path = require("path");
 const nodeExternals = require("webpack-node-externals");
 
@@ -10,10 +7,10 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "node-bundle.js",
-    libraryTarget: "commonjs2",
+    devtoolModuleFilenameTemplate: '[absolute-resource-path]'
   },
   externals: [nodeExternals()],
   resolve: {
-    extensions: [".ts", ".tsx", ".js"],
+    extensions: [".ts", ".js"],
   },
 };
