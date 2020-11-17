@@ -1,6 +1,6 @@
 <template>
   <div class="flex-container">
-    <form class="card">
+    <form @submit.prevent="onSubmit" class="card">
       <h3>Log in</h3>
       <p>
         Enter your e-mail to access your media selection panel, no password
@@ -28,8 +28,11 @@ export default {
     validateEmail(event) {
       const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
       this.isValidEmail = emailRegex.test(event.target.value);
-
-      console.log("Valid email: ", this.isValidEmail);
+    },
+    onSubmit() {
+      if (this.isValidEmail) {
+        this.$router.push("/dashboard");
+      }
     },
   },
 };
