@@ -8,8 +8,9 @@
 :root {
   --primary-blue: #2885e9;
   --primary-light-blue: #f6f9fc;
-  --text-dark: #4a5a83;
-  --border: #d7dde9;
+  --text-gray: #4a5a83;
+  --border-light-gray: #d7dde9;
+  --error-red: #bb0728;
 }
 
 * {
@@ -20,6 +21,6 @@
 body {
   margin: 0;
   background-color: #eee;
-  color: var(--text-dark);
+  color: var(--text-gray);
 }
 </style>
