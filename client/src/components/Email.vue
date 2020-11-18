@@ -7,12 +7,11 @@
         required. Haven't signed in before? No problem just enter your e-mail
         and be welcome!
       </p>
-      <input
-        @keyup="validateEmail"
-        type="text"
-        placeholder="e-mail@example.com"
-      />
-      <button type="submit" :disabled="!isValidEmail">Log in</button>
+      <input v-model="email" type="text" placeholder="e-mail@example.com" />
+      <p v-show="invalidEmail" class="error-label">
+        Please enter a valid email address
+      </p>
+      <button type="submit">Log in</button>
     </form>
   </div>
 </template>
@@ -21,16 +20,22 @@
 export default {
   data() {
     return {
-      isValidEmail: false,
+      invalidEmail: false,
+      email: "",
     };
   },
   methods: {
-    validateEmail(event) {
-      const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-      this.isValidEmail = emailRegex.test(event.target.value);
+    validateEmail(email) {
+      return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(
+        email
+      );
     },
     onSubmit() {
-      if (this.isValidEmail) {
+      if (!this.email) {
+        this.invalidEmail = true;
+      } else if (this.email && !this.validateEmail(this.email)) {
+        this.invalidEmail = true;
+      } else {
         this.$router.push("/dashboard");
       }
     },
@@ -51,14 +56,21 @@ export default {
   padding: 30px;
   font-size: 0.9rem;
   background-color: #f6f9fc;
-  border: 2px solid var(--border);
+  border: 2px solid var(--border-light-gray);
   border-radius: 5px;
+}
+
+.error-label {
+  color: var(--error-red);
 }
 
 input {
   display: block;
   width: 80%;
   padding: 5px;
+  border: 2px solid var(--border-light-gray);
+  background-color: #e1eefc;
+  border-radius: 5px;
 }
 
 button {
@@ -70,9 +82,5 @@ button {
   border-radius: 5px;
   color: var(--primary-light-blue);
   background-color: var(--primary-blue);
-}
-
-button:disabled {
-  background-color: #555;
 }
 </style>
