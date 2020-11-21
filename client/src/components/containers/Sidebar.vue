@@ -3,22 +3,22 @@
     <h4>Media Cloud</h4>
     <hr />
     <Tabs>
-      <SavedTab name="Saved" :selected="true" />
-      <DiscoverTab name="Discover" />
+      <Saved name="Saved" :selected="true" />
+      <Discover name="Discover" />
     </Tabs>
   </aside>
 </template>
 
 <script>
 import Tabs from "./Tabs";
-import SavedTab from "../SavedTab.vue";
-import DiscoverTab from "../DiscoverTab.vue";
+import Saved from "../tabs/Saved.vue";
+import Discover from "../tabs/Discover.vue";
 
 export default {
   components: {
     Tabs,
-    SavedTab,
-    DiscoverTab,
+    Saved,
+    Discover,
   },
 };
 </script>

@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import PicturesGrid from "./PicturesGrid.vue";
+import PicturesGrid from "../PicturesGrid.vue";
 
 export default {
   props: ["name", "selected"],

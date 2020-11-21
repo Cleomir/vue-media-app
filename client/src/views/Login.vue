@@ -1,14 +1,14 @@
 <template>
-  <EmailLogin />
+  <Email />
 </template>
 
 <script>
-import EmailLogin from "../components/EmailLogin.vue";
+import Email from "../components/login/Email.vue";
 
 export default {
   name: "Login",
   components: {
-    EmailLogin,
+    Email,
   },
 };
 </script>
