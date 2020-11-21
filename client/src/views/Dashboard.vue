@@ -1,18 +1,18 @@
 <template>
   <div class="dashboard">
     <Sidebar />
-    <Preview />
+    <PicturePreview />
   </div>
 </template>
 
 <script>
 import Sidebar from "../components/containers/Sidebar.vue";
-import Preview from "../components/Preview.vue";
+import PicturePreview from "../components/PicturePreview.vue";
 
 export default {
   components: {
     Sidebar,
-    Preview,
+    PicturePreview,
   },
 };
 </script>
