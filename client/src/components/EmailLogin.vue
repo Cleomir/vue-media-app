@@ -55,7 +55,7 @@ export default {
   width: 680px;
   padding: 30px;
   font-size: 0.9rem;
-  background-color: #f6f9fc;
+  background-color: #fff;
   border: 2px solid var(--border-light-gray);
   border-radius: 5px;
 }
@@ -69,7 +69,8 @@ input {
   width: 80%;
   padding: 5px;
   border: 2px solid var(--border-light-gray);
-  background-color: #e1eefc;
+  background-color: #e9f0fd;
+  color: #000;
   border-radius: 5px;
 }
 
@@ -80,7 +81,7 @@ button {
   margin-top: 14.4px;
   padding: 10px 15px;
   border-radius: 5px;
-  color: var(--primary-light-blue);
+  color: #fff;
   background-color: var(--primary-blue);
 }
 </style>
