@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 
-import uploadPicture from './uploadPicture'
+import uploadPictures from './uploadPictures'
 
 /**
  * Express router
@@ -8,6 +8,6 @@ import uploadPicture from './uploadPicture'
 const router: Router = express.Router();
 
 // mount routes
-router.post("/upload", uploadPicture);
+router.post("/upload", uploadPictures);
 
 export default router;
