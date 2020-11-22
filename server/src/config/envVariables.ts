@@ -8,6 +8,7 @@ dotenv.config({ path: ".env" });
 export const env: IEnvVariables = {
   CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY!,
   CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET!,
+  CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME!,
   NODE_ENV: process.env.NODE_ENV!,
   PEXELS_API_KEY: process.env.PEXELS_API_KEY!,
   SERVER_PORT: process.env.SERVER_PORT!,
