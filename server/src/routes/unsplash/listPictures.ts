@@ -45,7 +45,7 @@ const listPictures = async (req: Request, res: Response): Promise<Response> => {
     logObject("info", `[NODE][${id}] Response status 200`, response);
     return res.status(200).json({ success: true, data: response });
   } catch (error) {
-    logObject("error", "[NODE] Response status 500", error);
+    logObject("error", `[NODE][${id}] Response status 500`, error);
     return res
       .status(500)
       .json({ success: false, message: INTERNAL_SERVER_ERROR });
