@@ -54,7 +54,7 @@ if (env.NODE_ENV !== "production") {
 export const logObject = (
   level: "info" | "warn" | "error",
   message: string,
-  object: Record<string, unknown>
+  object: Record<string, unknown> | unknown[]
 ): void => {
   if (level === "info") {
     logger.info(`${message} ${inspect(object, { depth: null })}`);
