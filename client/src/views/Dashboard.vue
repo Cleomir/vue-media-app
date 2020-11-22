@@ -19,11 +19,11 @@ export default {
 
 <style scoped>
 .dashboard {
-  display: grid;
-  grid-template-columns: 30% 80%;
   background-color: #fff;
   border: 15px solid var(--border-light-gray);
-  overflow: hidden;
+  display: grid;
+  grid-template-columns: 30% 80%;
   height: 100vh;
+  overflow-x: hidden;
 }
 </style>
