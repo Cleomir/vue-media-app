@@ -45,14 +45,15 @@ ul {
   list-style: none;
   margin: 0;
   padding: 10px 10px 0 10px;
+  overflow-y: auto;
+  max-height: 820px;
 }
-
-li {
+ul li {
   cursor: pointer;
 }
-
 ul li img {
-  max-height: 100%;
   max-width: 100%;
+  max-height: 200px;
+  object-fit: contain;
 }
 </style>
