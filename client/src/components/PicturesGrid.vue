@@ -40,16 +40,17 @@ export default {
 
 ul {
   display: grid;
-  grid-gap: 10px;
+  grid-gap: 15px;
   grid-template-columns: 50% calc(50% - 10px);
   list-style: none;
   margin: 0;
-  padding: 10px 10px 0 10px;
+  padding: 15px 15px 0 15px;
   overflow-y: auto;
   max-height: 820px;
 }
 ul li {
   cursor: pointer;
+  outline: 2px solid var(--border-light-gray);
 }
 ul li img {
   max-width: 100%;
