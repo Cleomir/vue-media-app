@@ -19,4 +19,17 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+main {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  max-height: 100vh;
+  padding: 20%;
+}
+
+main img {
+  max-width: 100%;
+  object-fit: contain;
+}
+</style>
