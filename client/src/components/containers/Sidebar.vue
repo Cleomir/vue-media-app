@@ -24,6 +24,10 @@ export default {
 </script>
 
 <style scoped>
+aside {
+  border-right: 2px solid #EFF2F5;
+}
+
 h4 {
   margin: 20px;
   font-weight: 300;
