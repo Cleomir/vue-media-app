@@ -24,6 +24,6 @@ export default {
   display: grid;
   grid-template-columns: 30% 80%;
   height: 100vh;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 </style>
