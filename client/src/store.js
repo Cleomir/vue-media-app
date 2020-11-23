@@ -9,7 +9,6 @@ const store = new Vuex.Store({
   },
   mutations: {
     setPicturePreview: (state, previewUrl) => {
-      console.log("Called setPicturePreview, params: ", state, previewUrl);
       state.picturePreviewUrl = previewUrl;
     },
   },
