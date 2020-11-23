@@ -25,16 +25,16 @@ export default {
 
 <style scoped>
 aside {
-  border-right: 2px solid #EFF2F5;
+  border-right: 2px solid var(--border-light-gray);
 }
 
 h4 {
-  margin: 20px;
-  font-weight: 300;
   color: var(--text-dark-blue);
+  font-weight: 300;
+  margin: 20px;
 }
 
 hr {
-  color: #EFF2F5;
+  border: 1px solid var(--border-light-gray);
 }
 </style>
