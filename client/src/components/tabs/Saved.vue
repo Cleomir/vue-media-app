@@ -1,6 +1,6 @@
 <template>
   <div v-show="isActive">
-    <PicturesGrid />
+    <PicturesGrid :pictures="files" />
     <input
       type="file"
       ref="fileUpload"
@@ -9,13 +9,17 @@
       multiple
       @change="handleFileChange"
     />
-    <button @click="openFileSelection">
-      <span class="icon">+</span> Upload
-    </button>
+    <div class="upload-overlay">
+      <button @click="openFileSelection">
+        <span class="icon">+</span> Upload
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 import PicturesGrid from "../PicturesGrid";
 
 export default {
@@ -23,13 +27,14 @@ export default {
   data() {
     return {
       isActive: false,
+      files: [],
     };
   },
   methods: {
     openFileSelection() {
       this.$refs.fileUpload.click();
     },
-    toBase64(file) {
+    fileToBase64(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -37,20 +42,57 @@ export default {
         reader.onerror = (error) => reject(error);
       });
     },
-    async handleFileChange(e) {
-      const base64ImagePromises = [];
-      e.target.files.forEach((image) =>
-        base64ImagePromises.push(this.toBase64(image))
+    async handleFileChange(event) {
+      try {
+        // convert files to base64
+        // TODO show spinner
+        const base64FilePromises = [];
+        event.target.files.forEach((file) =>
+          base64FilePromises.push(this.fileToBase64(file))
+        );
+        const base64Files = await Promise.all(base64FilePromises);
+
+        const { status, data } = await this.uploadFiles({ files: base64Files });
+        // TODO remove spinner
+        if (status !== 201) {
+          // TODO show a modal with the error
+        } else {
+          const newPictures = data.response.map(
+            (picture) => picture.secure_url
+          );
+          this.files = [...this.files, ...newPictures];
+        }
+      } catch (error) {
+        // TODO show a modal with the error
+        console.error(error);
+      }
+    },
+
+    async uploadFiles(requestBody) {
+      return axios.post(
+        "http://localhost:3000/api/cloudinary/upload",
+        requestBody
       );
-      const base64Images = await Promise.all(base64ImagePromises);
-      console.log(base64Images);
-      // TODO send base64 images to server
     },
   },
   computed: {
     href() {
       return `#${this.name.toLowerCase()}`;
     },
+  },
+  async created() {
+    try {
+      const { status, data } = await axios.get(
+        "http://localhost:3000/api/cloudinary/"
+      );
+      if (status === 500) {
+        console.error(data.message);
+      } else {
+        this.files = data.resources.map((picture) => picture.secure_url);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   },
   mounted() {
     this.isActive = this.selected;
@@ -64,15 +106,25 @@ export default {
 <style scoped>
 div {
   text-align: center;
+  position: relative;
 }
-button {
+
+.upload-overlay {
+  padding: 10px;
+  position: fixed;
+  width: calc(30% - 13px);
+  left: 15px;
+  bottom: 15px;
+  background-color: #fff;
+}
+
+.upload-overlay button {
+  width: 100%;
   background-color: var(--primary-blue);
   border-radius: 5px;
   border: none;
   color: #fff;
   cursor: pointer;
-  outline: none;
-  padding: 10px 0;
-  width: 90%;
+  padding: 5px 0;
 }
 </style>
