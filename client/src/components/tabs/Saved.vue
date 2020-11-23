@@ -105,26 +105,25 @@ export default {
 
 <style scoped>
 div {
-  text-align: center;
   position: relative;
+  text-align: center;
 }
 
 .upload-overlay {
-  padding: 10px;
-  position: fixed;
-  width: calc(30% - 13px);
-  left: 15px;
-  bottom: 15px;
   background-color: #fff;
+  bottom: 15px;
+  padding: 15px;
+  position: fixed;
+  width: calc(30% - 27px);
 }
 
 .upload-overlay button {
-  width: 100%;
   background-color: var(--primary-blue);
   border-radius: 5px;
   border: none;
   color: #fff;
   cursor: pointer;
   padding: 5px 0;
+  width: 100%;
 }
 </style>
