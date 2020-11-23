@@ -22,7 +22,7 @@ export default {
   background-color: #fff;
   border: 15px solid var(--border-light-gray);
   display: grid;
-  grid-template-columns: 30% 80%;
+  grid-template-columns: 30% 70%;
   height: 100vh;
   overflow: hidden;
 }
