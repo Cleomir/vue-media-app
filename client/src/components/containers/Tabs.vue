@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 export default {
   data() {
     return {
@@ -24,10 +26,12 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["setPicturePreview"]),
     selectTab(selectedTab) {
       this.tabs.forEach((tab) => {
         tab.isActive = tab.name === selectedTab.name;
       });
+      this.setPicturePreview("");
     },
   },
   created() {
