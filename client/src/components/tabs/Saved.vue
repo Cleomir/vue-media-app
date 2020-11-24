@@ -57,7 +57,7 @@ export default {
         if (status !== 201) {
           // TODO show a modal with the error
         } else {
-          const newPictures = data.response.map(
+          const newPictures = data.map(
             (picture) => picture.secure_url
           );
           this.files = [...this.files, ...newPictures];
