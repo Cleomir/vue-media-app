@@ -1,17 +1,13 @@
 <template>
   <div class="tabs">
     <ul>
-      <li
-        v-for="(tab, index) in tabs"
-        :key="index"
-        :class="{ 'is-active': tab.isActive }"
-      >
-        <a :href="tab.href" @click="selectTab(tab)">{{ tab.name }}</a>
+      <li v-for="(tab, index) in links" :key="index">
+        <router-link :to="{ name: tab.path }">{{ tab.name }}</router-link>
       </li>
     </ul>
 
     <div class="tab-content">
-      <slot></slot>
+      <router-view />
     </div>
   </div>
 </template>
@@ -20,11 +16,7 @@
 import { mapMutations } from "vuex";
 
 export default {
-  data() {
-    return {
-      tabs: [],
-    };
-  },
+  props: ["links"],
   methods: {
     ...mapMutations(["setPicturePreview"]),
     selectTab(selectedTab) {
@@ -41,11 +33,9 @@ export default {
 </script>
 
 <style scoped>
-li.is-active {
-  border-bottom: 2px solid var(--primary-blue);
-}
-.is-active a {
+.router-link-active {
   color: var(--primary-blue);
+  border-bottom: 2px solid var(--primary-blue);
 }
 
 ul {
@@ -57,12 +47,13 @@ ul {
 li {
   display: inline-block;
   width: 50%;
-  padding: 15px 0;
-  border-bottom: 2px solid var(--border-light-gray);
-  text-align: center;
 }
 
 li a {
+  display: block;
+  padding: 15px 0;
+  border-bottom: 2px solid var(--border-light-gray);
+  text-align: center;
   text-decoration: none;
 }
 </style>

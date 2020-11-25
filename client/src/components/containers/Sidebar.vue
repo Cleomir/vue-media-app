@@ -2,23 +2,24 @@
   <aside>
     <h4>Media Cloud</h4>
     <hr />
-    <Tabs>
-      <Saved name="Saved" :selected="true" />
-      <Discover name="Discover" />
-    </Tabs>
+    <Tabs :links="tabLinks"> </Tabs>
   </aside>
 </template>
 
 <script>
 import Tabs from "./Tabs";
-import Saved from "../tabs/Saved.vue";
-import Discover from "../tabs/Discover.vue";
 
 export default {
+  data() {
+    return {
+      tabLinks: [
+        { name: "Saved", path: `saved` },
+        { name: "Discover", path: "discover" },
+      ],
+    };
+  },
   components: {
     Tabs,
-    Saved,
-    Discover,
   },
 };
 </script>

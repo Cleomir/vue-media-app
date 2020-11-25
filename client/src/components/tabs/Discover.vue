@@ -51,7 +51,7 @@ export default {
       if (this.searchKeyword && this.selectedStockButton) {
         try {
           const stockSite = this.selectedStockButton.toLowerCase();
-          const { data, status } = await axios.get(
+          const { status, data } = await axios.get(
             `http://localhost:3000/api/${stockSite}/search`,
             {
               params: {
@@ -65,6 +65,9 @@ export default {
             this.searchedPictures = data.photos
               ? data.photos
               : data.data.results;
+
+            console.log("Response: ", data);
+            
           }
         } catch (error) {
           console.error(error);
@@ -79,7 +82,7 @@ export default {
     },
   },
   mounted() {
-    this.isActive = this.selected;
+    this.isActive = true;
   },
   components: {
     PicturesGrid,
