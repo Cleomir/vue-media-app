@@ -26,9 +26,6 @@ export default {
       this.setPicturePreview("");
     },
   },
-  created() {
-    this.tabs = this.$children;
-  },
 };
 </script>
 
