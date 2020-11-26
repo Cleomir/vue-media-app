@@ -23,6 +23,7 @@
 
 <script>
 import axios from "axios";
+import { mapMutations } from "vuex";
 
 import PicturesGrid from "../PicturesGrid";
 import { apiUrl } from "../../config";
@@ -40,6 +41,7 @@ export default {
     },
   },
   methods: {
+    ...mapMutations(["setPicturePreview"]),
     openFileSelection() {
       this.$refs.fileUpload.click();
     },
@@ -85,6 +87,8 @@ export default {
     },
   },
   async created() {
+    this.setPicturePreview("");
+    
     try {
       const { status, data } = await axios.get(`${apiUrl}/api/cloudinary/`);
       if (status === 500) {
