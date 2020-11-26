@@ -129,7 +129,7 @@ ul {
   margin: 15px 0;
   max-height: 820px;
   overflow-y: auto;
-  padding: 0 15px;
+  padding: 3px 15px 0 15px;
 }
 ul li {
   cursor: pointer;
