@@ -19,12 +19,6 @@ export default {
   props: ["links"],
   methods: {
     ...mapMutations(["setPicturePreview"]),
-    selectTab(selectedTab) {
-      this.tabs.forEach((tab) => {
-        tab.isActive = tab.name === selectedTab.name;
-      });
-      this.setPicturePreview("");
-    },
   },
 };
 </script>
