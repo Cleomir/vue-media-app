@@ -126,18 +126,20 @@ ul {
   grid-gap: 15px;
   grid-template-columns: 50% calc(50% - 10px);
   list-style: none;
-  margin: 0;
-  padding: 15px 15px 0 15px;
-  overflow-y: auto;
+  margin: 15px 0;
   max-height: 820px;
+  overflow-y: auto;
+  padding: 0 15px;
 }
 ul li {
   cursor: pointer;
+  height: 200px;
   outline: 2px solid var(--border-light-gray);
+  width: 250px;
 }
 ul li img {
-  max-width: 100%;
-  max-height: 200px;
-  object-fit: contain;
+  height: inherit;
+  object-fit: cover;
+  width: inherit;
 }
 </style>
