@@ -15,12 +15,9 @@ const routes = [
   },
   {
     path: "/dashboard",
+    redirect: "/dashboard/saved",
     component: Dashboard,
     children: [
-      {
-        path: "",
-        component: Saved,
-      },
       {
         path: "saved",
         component: Saved,
