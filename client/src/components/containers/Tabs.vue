@@ -13,13 +13,8 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
-
 export default {
   props: ["links"],
-  methods: {
-    ...mapMutations(["setPicturePreview"]),
-  },
 };
 </script>
 
