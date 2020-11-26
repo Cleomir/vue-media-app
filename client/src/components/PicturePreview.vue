@@ -21,15 +21,16 @@ export default {
 
 <style scoped>
 main {
-  align-items: center;
   display: flex;
+  align-items: center;
   justify-content: center;
   max-height: 100vh;
-  padding: 20%;
+  padding: 15%;
 }
 
 main img {
   max-width: 100%;
-  object-fit: contain;
+  max-height: 80vh;
+  object-fit: cover;
 }
 </style>
