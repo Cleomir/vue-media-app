@@ -1,6 +1,10 @@
 <template>
   <div v-show="isActive">
-    <PicturesGrid :pictures="files" />
+    <PicturesGrid
+      :files="files"
+      :displayType="'saved'"
+      :onScrollUrl="loadNextPageUrl"
+    />
     <input
       type="file"
       ref="fileUpload"
@@ -21,19 +25,25 @@
 import axios from "axios";
 
 import PicturesGrid from "../PicturesGrid";
+import { apiUrl } from "../../config";
 
 export default {
-  props: ["name", "selected"],
   data() {
     return {
       isActive: false,
-      files: [],
+      files: {},
     };
+  },
+  computed: {
+    loadNextPageUrl() {
+      return `${apiUrl}/api/cloudinary/`;
+    },
   },
   methods: {
     openFileSelection() {
       this.$refs.fileUpload.click();
     },
+
     fileToBase64(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -42,6 +52,7 @@ export default {
         reader.onerror = (error) => reject(error);
       });
     },
+
     async handleFileChange(event) {
       try {
         // convert files to base64
@@ -57,9 +68,7 @@ export default {
         if (status !== 201) {
           // TODO show a modal with the error
         } else {
-          const newPictures = data.map(
-            (picture) => picture.secure_url
-          );
+          const newPictures = data.map((picture) => picture.secure_url);
           this.files = [...this.files, ...newPictures];
         }
       } catch (error) {
@@ -75,20 +84,14 @@ export default {
       );
     },
   },
-  computed: {
-    href() {
-      return `#${this.name.toLowerCase()}`;
-    },
-  },
   async created() {
     try {
-      const { status, data } = await axios.get(
-        "http://localhost:3000/api/cloudinary/"
-      );
+      const { status, data } = await axios.get(`${apiUrl}/api/cloudinary/`);
       if (status === 500) {
         console.error(data.message);
       } else {
-        this.files = data.resources.map((picture) => picture.secure_url);
+        const pictures = data.resources.map((picture) => picture.secure_url);
+        this.files = { nextCursor: data.next_cursor, pictures };
       }
     } catch (error) {
       console.error(error);
