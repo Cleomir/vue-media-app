@@ -14,8 +14,9 @@
       @change="handleFileChange"
     />
     <div class="upload-overlay">
-      <button @click="openFileSelection">
+      <button @click="openFileSelection" :disabled="displaySpinner">
         <span class="icon">+</span> Upload
+        <Spinner v-show="displaySpinner" :small="true" />
       </button>
     </div>
   </div>
@@ -23,9 +24,10 @@
 
 <script>
 import axios from "axios";
-import { mapMutations } from "vuex";
+import { mapMutations, mapState } from "vuex";
 
 import PicturesGrid from "../PicturesGrid";
+import Spinner from "../Spinner.vue";
 import { apiUrl } from "../../config";
 
 export default {
@@ -36,12 +38,13 @@ export default {
     };
   },
   computed: {
+    ...mapState(["displaySpinner"]),
     loadNextPageUrl() {
       return `${apiUrl}/api/cloudinary/`;
     },
   },
   methods: {
-    ...mapMutations(["setPicturePreview"]),
+    ...mapMutations(["setPicturePreview", "showSpinner", "hideSpinner"]),
     openFileSelection() {
       this.$refs.fileUpload.click();
     },
@@ -58,20 +61,23 @@ export default {
     async handleFileChange(event) {
       try {
         // convert files to base64
-        // TODO show spinner
+        this.showSpinner();
         const base64FilePromises = [];
         event.target.files.forEach((file) =>
           base64FilePromises.push(this.fileToBase64(file))
         );
         const base64Files = await Promise.all(base64FilePromises);
-
         const { status, data } = await this.uploadFiles({ files: base64Files });
-        // TODO remove spinner
+
         if (status !== 201) {
           // TODO show a modal with the error
         } else {
           const newPictures = data.map((picture) => picture.secure_url);
-          this.files = [...this.files, ...newPictures];
+          this.files = {
+            ...this.files,
+            pictures: [...this.files.pictures, ...newPictures],
+          };
+          this.hideSpinner();
         }
       } catch (error) {
         // TODO show a modal with the error
@@ -88,7 +94,7 @@ export default {
   },
   async created() {
     this.setPicturePreview("");
-    
+
     try {
       const { status, data } = await axios.get(`${apiUrl}/api/cloudinary/`);
       if (status === 500) {
@@ -106,6 +112,7 @@ export default {
   },
   components: {
     PicturesGrid,
+    Spinner,
   },
 };
 </script>
@@ -125,11 +132,15 @@ div {
 }
 
 .upload-overlay button {
+  align-items: center;
   background-color: var(--primary-blue);
   border-radius: 5px;
   border: none;
   color: #fff;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  outline: none;
   padding: 5px 0;
   width: 100%;
 }
