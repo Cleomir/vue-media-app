@@ -16,7 +16,7 @@
     <div class="upload-overlay">
       <button @click="openFileSelection" :disabled="displaySpinner">
         <span class="icon">+</span> Upload
-        <Spinner v-show="displaySpinner" :small="true" />
+        <Spinner v-show="displaySpinner" />
       </button>
     </div>
   </div>

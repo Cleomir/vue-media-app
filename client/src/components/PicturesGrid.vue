@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul ref="picturesGrid" v-if="Object.entries(onScrollFiles).length >= 1">
+    <ul v-if="Object.entries(onScrollFiles).length >= 1" ref="picturesGrid">
       <li
         v-for="(picture, index) in onScrollFiles.pictures"
         :key="index"
@@ -12,12 +12,12 @@
         <img :src="picture" alt="picture" />
         <div v-if="displayType === 'discover'" class="use-overlay">
           <button @click="usePicture(picture)">
-            <span>+</span> Use <Spinner v-show="displaySpinner" :small="true" />
+            <span>+</span> Use <Spinner v-show="displaySpinner" />
           </button>
         </div>
       </li>
     </ul>
-    <ul ref="picturesGrid" v-else>
+    <ul v-else ref="picturesGrid">
       <li
         v-for="(picture, index) in files.pictures"
         :key="index"
@@ -29,7 +29,7 @@
         <img :src="picture" alt="picture" />
         <div v-if="displayType === 'discover'" class="use-overlay">
           <button @click="usePicture(picture)">
-            <span>+</span> Use <Spinner v-show="displaySpinner" :small="true" />
+            <span>+</span> Use <Spinner v-show="displaySpinner" />
           </button>
         </div>
       </li>
