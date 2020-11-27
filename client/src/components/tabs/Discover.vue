@@ -20,7 +20,7 @@
       />
       <button v-show="searchKeyword" @click="clearSearchBar">&#x1F5D9;</button>
     </div>
-    <PicturesGrid :files="searchedPictures" />
+    <PicturesGrid :files="searchedPictures" :displayType="'discover'"/>
   </div>
 </template>
 
@@ -55,7 +55,6 @@ export default {
         // TODO show spinner
         try {
           const stockSite = this.selectedStockButton.toLowerCase();
-          console.log("Stock site: ", stockSite);
           const { status, data } = await axios.get(
             `${apiUrl}/api/${stockSite}/search`,
             {
