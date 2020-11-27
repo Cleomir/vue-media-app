@@ -1,37 +1,15 @@
 <template>
-  <div :class="{ small: small, blue: blue, centered: centered }" class="loader">
-    Loading...
-  </div>
+  <div class="loader"></div>
 </template>
 
 <script>
-export default {
-  props: ["small", "blue", "centered"],
-};
+export default {};
 </script>
 
 <style scoped>
-.blue {
-  background-color: var(--primary-blue) !important;
-}
-.blue::before {
-  background-color: var(--primary-blue) !important;
-}
-.blue::after {
-  background-color: #fff !important;
-}
-
-.small {
-  font-size: 2px !important;
-}
-
-.centered {
-  margin: 10px auto !important;
-}
-
 .loader {
   display: block;
-  font-size: 10px;
+  font-size: 2px;
   margin-left: 10px;
   width: 11em;
   height: 11em;
