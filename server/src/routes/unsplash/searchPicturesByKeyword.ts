@@ -48,7 +48,7 @@ const searchPicturesByKeyword = async (
     });
 
     logObject("info", `[NODE][${id}] Response status 200`, response);
-    return res.status(200).json({ data: response });
+    return res.status(200).json(response);
   } catch (error) {
     logObject("error", "[NODE] Response status 500", error);
     return res.status(500).json({ message: INTERNAL_SERVER_ERROR });
