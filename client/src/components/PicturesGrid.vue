@@ -10,6 +10,11 @@
         @click="selectPicture(picture)"
       >
         <img :src="picture" alt="picture" />
+        <div v-if="displayType === 'discover'" class="use-overlay">
+          <button @click="usePicture(picture)">
+            <span>+</span> Use <Spinner v-show="displaySpinner" :small="true" />
+          </button>
+        </div>
       </li>
     </ul>
     <ul ref="picturesGrid" v-else>
@@ -22,6 +27,11 @@
         @click="selectPicture(picture)"
       >
         <img :src="picture" alt="picture" />
+        <div v-if="displayType === 'discover'" class="use-overlay">
+          <button @click="usePicture(picture)">
+            <span>+</span> Use <Spinner v-show="displaySpinner" :small="true" />
+          </button>
+        </div>
       </li>
     </ul>
   </div>
@@ -29,13 +39,14 @@
 
 <script>
 import axios from "axios";
-import { mapMutations } from "vuex";
+import { mapMutations, mapState } from "vuex";
 
 import {
   cloudinaryListPicturesUrl,
   // pexelsSearchUrl,
   // unsplashSearchUrl,
 } from "../config";
+import Spinner from "../components/Spinner.vue";
 
 export default {
   props: ["files", "displayType", "onScrollUrl"],
@@ -47,8 +58,12 @@ export default {
     };
   },
 
+  computed: {
+    ...mapState(["displaySpinner"]),
+  },
+
   methods: {
-    ...mapMutations(["setPicturePreview"]),
+    ...mapMutations(["setPicturePreview", "showSpinner", "hideSpinner"]),
     selectPicture(url) {
       this.isSelected = url;
       this.setPicturePreview(url);
@@ -109,9 +124,17 @@ export default {
           break;
       }
     },
+    usePicture(url) {
+      console.log(url);
+      // TODO make call to server with url
+    },
   },
+
   mounted() {
     this.onScroll();
+  },
+  components: {
+    Spinner,
   },
 };
 </script>
@@ -135,11 +158,49 @@ ul li {
   cursor: pointer;
   height: 200px;
   outline: 2px solid var(--border-light-gray);
+  position: relative;
   width: 250px;
 }
 ul li img {
+  display: block;
   height: inherit;
   object-fit: cover;
   width: inherit;
+}
+
+.use-overlay {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: 0.5s ease;
+}
+
+.use-overlay:hover {
+  opacity: 1;
+}
+
+.use-overlay span {
+  color: #fff;
+  padding-right: 5px;
+}
+
+.use-overlay button {
+  align-items: center;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  padding: 10px 25px;
+  background-color: var(--primary-blue);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  position: absolute;
 }
 </style>
