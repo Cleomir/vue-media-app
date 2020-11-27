@@ -29,6 +29,6 @@ body {
 .icon {
   color: #fff;
   font-size: 1.2rem;
-  vertical-align: middle;
+  margin-right: 5px;
 }
 </style>
