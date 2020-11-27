@@ -13,33 +13,36 @@
     <div class="search-bar">
       <input
         v-model="searchKeyword"
-        @keyup.enter="searchStockPhotos"
+        @keyup.enter="searchStockPictures"
         class="clear-form-icon"
         type="text"
+        placeholder="Search for a keyword..."
       />
       <button v-show="searchKeyword" @click="clearSearchBar">&#x1F5D9;</button>
     </div>
-    <PicturesGrid :pictures="searchedPictures" />
+    <PicturesGrid :files="searchedPictures" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import { mapMutations } from "vuex";
 
 import PicturesGrid from "../PicturesGrid.vue";
+import { apiUrl } from "../../config";
 
 export default {
-  props: ["name", "selected"],
   data() {
     return {
       searchKeyword: "",
-      searchedPictures: [],
+      searchedPictures: {},
       isActive: false,
       selectedStockButton: "",
       stockButtons: ["Unsplash", "Pexels"],
     };
   },
   methods: {
+    ...mapMutations(["setPicturePreview"]),
     clearSearchBar() {
       this.searchKeyword = "";
     },
@@ -47,12 +50,14 @@ export default {
       this.selectedStockButton = site;
       this.clearSearchBar();
     },
-    async searchStockPhotos() {
+    async searchStockPictures() {
       if (this.searchKeyword && this.selectedStockButton) {
+        // TODO show spinner
         try {
           const stockSite = this.selectedStockButton.toLowerCase();
+          console.log("Stock site: ", stockSite);
           const { status, data } = await axios.get(
-            `http://localhost:3000/api/${stockSite}/search`,
+            `${apiUrl}/api/${stockSite}/search`,
             {
               params: {
                 query: this.searchKeyword,
@@ -62,12 +67,8 @@ export default {
           if (status !== 200) {
             // TODO show error in modal
           } else {
-            this.searchedPictures = data.photos
-              ? data.photos
-              : data.data.results;
-
-            console.log("Response: ", data);
-            
+            this.mapSearchedPictures(data);
+            // TODO hide spinner
           }
         } catch (error) {
           console.error(error);
@@ -75,11 +76,22 @@ export default {
         }
       }
     },
-  },
-  computed: {
-    href() {
-      return `#${this.name.toLowerCase()}`;
+    mapSearchedPictures(responseData) {
+      // Unsplash
+      if (responseData.results) {
+        const { total, total_pages, results } = responseData;
+        const picturesUrls = results.map((picture) => picture.urls.regular);
+        this.searchedPictures = { pictures: picturesUrls, total, total_pages };
+      } else if (responseData.photos) {
+        // Pexels
+        const { next_page, photos } = responseData;
+        const picturesUrls = photos.map((photos) => photos.src.large);
+        this.searchedPictures = { pictures: picturesUrls, next_page };
+      }
     },
+  },
+  created() {
+    this.setPicturePreview("");
   },
   mounted() {
     this.isActive = true;
