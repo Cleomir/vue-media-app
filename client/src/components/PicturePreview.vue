@@ -1,11 +1,7 @@
 <template>
   <main>
     <h1 v-if="!picturePreviewUrl">No picture has been selected</h1>
-    <img
-      v-else-if="picturePreviewUrl"
-      :src="picturePreviewUrl"
-      alt="picture preview"
-    />
+    <img v-else :src="picturePreviewUrl" alt="picture preview" />
   </main>
 </template>
 
