@@ -11,7 +11,8 @@
       <img :src="picture" alt="picture" />
       <div v-if="displayType === 'discover'" class="use-overlay">
         <button @click="usePicture(picture)">
-          <span>+</span> Use <Spinner v-show="displaySpinner" />
+          <span class="icon">&plus;</span> Use
+          <Spinner v-show="displaySpinner" />
         </button>
       </div>
     </li>
