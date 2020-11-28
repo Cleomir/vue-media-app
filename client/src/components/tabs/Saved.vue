@@ -92,6 +92,7 @@ export default {
     },
   },
   async created() {
+    this.isActive = true;
     this.setPicturePreview("");
     this.clearPictures();
 
@@ -109,9 +110,6 @@ export default {
     } catch (error) {
       console.error(error);
     }
-  },
-  mounted() {
-    this.isActive = true;
   },
   components: {
     PicturesGrid,

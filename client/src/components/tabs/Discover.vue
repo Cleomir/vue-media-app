@@ -99,11 +99,9 @@ export default {
     },
   },
   created() {
+    this.isActive = true;
     this.setPicturePreview("");
     this.clearPictures();
-  },
-  mounted() {
-    this.isActive = true;
   },
   components: {
     PicturesGrid,
