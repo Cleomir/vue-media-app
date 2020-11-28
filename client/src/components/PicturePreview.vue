@@ -17,16 +17,16 @@ export default {
 
 <style scoped>
 main {
-  display: flex;
   align-items: center;
+  display: flex;
+  height: 100vh;
   justify-content: center;
-  max-height: 100vh;
-  padding: 15%;
+  padding: 15% 15%;
 }
 
 main img {
-  max-width: 100%;
-  max-height: 80vh;
+  height: 100%;
   object-fit: cover;
+  width: 100%;
 }
 </style>
