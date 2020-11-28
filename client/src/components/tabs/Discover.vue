@@ -53,11 +53,10 @@ export default {
     },
     selectStockSite(site) {
       this.selectedStockButton = site;
-      this.clearSearchBar();
     },
     async searchStockPictures() {
       if (this.searchKeyword && this.selectedStockButton) {
-        // TODO show spinner
+        this.clearPictures();
         try {
           const stockSite = this.selectedStockButton.toLowerCase();
           const { status, data } = await axios.get(
@@ -72,7 +71,6 @@ export default {
             // TODO show error in modal
           } else {
             this.mapSearchedPictures(data);
-            // TODO hide spinner
           }
         } catch (error) {
           console.error(error);
