@@ -20,7 +20,7 @@
       />
       <button v-show="searchKeyword" @click="clearSearchBar">&#x1F5D9;</button>
     </div>
-    <PicturesGrid :files="searchedPictures" :displayType="'discover'"/>
+    <PicturesGrid :displayType="'discover'" />
   </div>
 </template>
 
@@ -35,14 +35,19 @@ export default {
   data() {
     return {
       searchKeyword: "",
-      searchedPictures: {},
+      // searchedPictures: {},
       isActive: false,
       selectedStockButton: "",
       stockButtons: ["Unsplash", "Pexels"],
     };
   },
   methods: {
-    ...mapMutations(["setPicturePreview"]),
+    ...mapMutations([
+      "setPicturePreview",
+      "setPictures",
+      "setNextPage",
+      "clearPictures",
+    ]),
     clearSearchBar() {
       this.searchKeyword = "";
     },
@@ -80,17 +85,22 @@ export default {
       if (responseData.results) {
         const { total, total_pages, results } = responseData;
         const picturesUrls = results.map((picture) => picture.urls.regular);
-        this.searchedPictures = { pictures: picturesUrls, total, total_pages };
+
+        this.setNextPage({ total, total_pages });
+        this.setPictures(picturesUrls);
       } else if (responseData.photos) {
         // Pexels
         const { next_page, photos } = responseData;
         const picturesUrls = photos.map((photos) => photos.src.large);
-        this.searchedPictures = { pictures: picturesUrls, next_page };
+
+        this.setNextPage({ next_page });
+        this.setPictures(picturesUrls);
       }
     },
   },
   created() {
     this.setPicturePreview("");
+    this.clearPictures();
   },
   mounted() {
     this.isActive = true;

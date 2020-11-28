@@ -1,10 +1,6 @@
 <template>
   <div v-show="isActive">
-    <PicturesGrid
-      :files="files"
-      :displayType="'saved'"
-      :onScrollUrl="loadNextPageUrl"
-    />
+    <PicturesGrid :displayType="'saved'" :onScrollUrl="loadNextPageUrl" />
     <input
       type="file"
       ref="fileUpload"
@@ -34,7 +30,6 @@ export default {
   data() {
     return {
       isActive: false,
-      files: {},
     };
   },
   computed: {
@@ -44,7 +39,14 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["setPicturePreview", "showSpinner", "hideSpinner"]),
+    ...mapMutations([
+      "setPicturePreview",
+      "showSpinner",
+      "hideSpinner",
+      "setPictures",
+      "setNextPage",
+      "clearPictures",
+    ]),
     openFileSelection() {
       this.$refs.fileUpload.click();
     },
@@ -72,11 +74,8 @@ export default {
         if (status !== 201) {
           // TODO show a modal with the error
         } else {
-          const newPictures = data.map((picture) => picture.secure_url);
-          this.files = {
-            ...this.files,
-            pictures: [...this.files.pictures, ...newPictures],
-          };
+          const picturesUrls = data.map((picture) => picture.secure_url);
+          this.setPictures(picturesUrls);
           this.hideSpinner();
         }
       } catch (error) {
@@ -94,14 +93,18 @@ export default {
   },
   async created() {
     this.setPicturePreview("");
+    this.clearPictures();
 
     try {
       const { status, data } = await axios.get(`${apiUrl}/api/cloudinary/`);
-      if (status === 500) {
+      if (status !== 200) {
         console.error(data.message);
       } else {
-        const pictures = data.resources.map((picture) => picture.secure_url);
-        this.files = { nextCursor: data.next_cursor, pictures };
+        const picturesUrls = data.resources.map(
+          (picture) => picture.secure_url
+        );
+        this.setNextPage({ nextCursor: data.next_cursor });
+        this.setPictures(picturesUrls);
       }
     } catch (error) {
       console.error(error);

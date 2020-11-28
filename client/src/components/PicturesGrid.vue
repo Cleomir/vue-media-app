@@ -1,40 +1,21 @@
 <template>
-  <div>
-    <ul v-if="Object.entries(onScrollFiles).length >= 1" ref="picturesGrid">
-      <li
-        v-for="(picture, index) in onScrollFiles.pictures"
-        :key="index"
-        :class="{
-          'is-selected': displayType === 'saved' && picture === isSelected,
-        }"
-        @click="selectPicture(picture)"
-      >
-        <img :src="picture" alt="picture" />
-        <div v-if="displayType === 'discover'" class="use-overlay">
-          <button @click="usePicture(picture)">
-            <span>+</span> Use <Spinner v-show="displaySpinner" />
-          </button>
-        </div>
-      </li>
-    </ul>
-    <ul v-else ref="picturesGrid">
-      <li
-        v-for="(picture, index) in files.pictures"
-        :key="index"
-        :class="{
-          'is-selected': displayType === 'saved' && picture === isSelected,
-        }"
-        @click="selectPicture(picture)"
-      >
-        <img :src="picture" alt="picture" />
-        <div v-if="displayType === 'discover'" class="use-overlay">
-          <button @click="usePicture(picture)">
-            <span>+</span> Use <Spinner v-show="displaySpinner" />
-          </button>
-        </div>
-      </li>
-    </ul>
-  </div>
+  <ul ref="picturesGrid">
+    <li
+      v-for="(picture, index) in pictures"
+      :key="index"
+      :class="{
+        'is-selected': displayType === 'saved' && picture === isSelected,
+      }"
+      @click="selectPicture(picture)"
+    >
+      <img :src="picture" alt="picture" />
+      <div v-if="displayType === 'discover'" class="use-overlay">
+        <button @click="usePicture(picture)">
+          <span>+</span> Use <Spinner v-show="displaySpinner" />
+        </button>
+      </div>
+    </li>
+  </ul>
 </template>
 
 <script>
@@ -49,21 +30,26 @@ import {
 import Spinner from "../components/Spinner.vue";
 
 export default {
-  props: ["files", "displayType", "onScrollUrl"],
+  props: ["displayType", "onScrollUrl"],
   data() {
     return {
       isSelected: "",
-      onScrollFiles: {},
-      firstRender: true,
     };
   },
 
   computed: {
-    ...mapState(["displaySpinner"]),
+    ...mapState(["displaySpinner", "pictures", "nextPage"]),
   },
 
   methods: {
-    ...mapMutations(["setPicturePreview", "showSpinner", "hideSpinner"]),
+    ...mapMutations([
+      "setPicturePreview",
+      "showSpinner",
+      "hideSpinner",
+      "setNextPage",
+      "setPictures",
+      "clearPictures",
+    ]),
     selectPicture(url) {
       this.isSelected = url;
       this.setPicturePreview(url);
@@ -77,24 +63,19 @@ export default {
           this.$refs.picturesGrid.scrollHeight;
 
         if (bottomOfPage) {
-          // use props values in the first event triggered, otherwise use values in state
-          if ((this.files.nextCursor && this.firstRender) || this.nextCursor) {
-            // TODO show spinner
-            this.firstRender = false;
+          if (this.nextPage.nextCursor) {
             try {
+              // TODO handle pagination for other providers
               const { status, data } = await this.onScrollFetchNextPage(
                 this.onScrollUrl,
                 {
-                  next_cursor: this.nextCursor
-                    ? this.nextCursor
-                    : this.files.nextCursor,
+                  next_cursor: this.nextPage.nextCursor,
                 }
               );
               if (status !== 200) {
                 // TODO show modal with error
               } else {
                 this.OnScrollHandleResponse(data, this.onScrollUrl);
-                // TODO hide spinner
               }
             } catch (error) {
               // TODO show modal with error
@@ -113,10 +94,8 @@ export default {
       switch (url) {
         case cloudinaryListPicturesUrl: {
           const picturesUrl = data.resources.map((file) => file.secure_url);
-          this.onScrollFiles = {
-            next_cursor: data.next_cursor || undefined,
-            pictures: [...this.files.pictures, ...picturesUrl],
-          };
+          this.setNextPage({ next_cursor: data.next_cursor || undefined });
+          this.setPictures(picturesUrl);
           break;
         }
 
