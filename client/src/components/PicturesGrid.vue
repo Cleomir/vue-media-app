@@ -10,7 +10,7 @@
     >
       <img :src="picture" alt="picture" />
       <div v-if="displayType === 'discover'" class="use-overlay">
-        <button @click="usePicture(picture)">
+        <button @click.stop="usePicture(picture)" :disabled="displaySpinner">
           <span class="icon">&plus;</span> Use
           <Spinner v-show="displaySpinner" />
         </button>
@@ -25,6 +25,7 @@ import { mapMutations, mapState } from "vuex";
 
 import {
   cloudinaryListPicturesUrl,
+  uploadPictureUrl,
   // pexelsSearchUrl,
   // unsplashSearchUrl,
 } from "../config";
@@ -104,9 +105,26 @@ export default {
           break;
       }
     },
-    usePicture(url) {
-      console.log(url);
-      // TODO make call to server with url
+    async usePicture(url) {
+      this.showSpinner();
+
+      try {
+        const { status } = await axios.post(uploadPictureUrl, {
+          files: [url],
+        });
+
+        if (status !== 201) {
+          this.hideSpinner();
+          // TODO show success or error message
+        } else {
+          this.hideSpinner();
+          // TODO show success or error message
+        }
+      } catch (error) {
+        console.error(error);
+        this.hideSpinner();
+        // TODO show success or error message
+      }
     },
   },
 
@@ -160,16 +178,13 @@ ul li img {
   transition: 0.5s ease;
   width: 100%;
 }
-
 .use-overlay:hover {
   opacity: 1;
 }
-
 .use-overlay span {
   color: #fff;
   padding-right: 5px;
 }
-
 .use-overlay button {
   align-items: center;
   background-color: var(--primary-blue);
