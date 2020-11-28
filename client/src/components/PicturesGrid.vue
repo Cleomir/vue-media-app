@@ -127,9 +127,9 @@ ul {
   display: grid;
   grid-gap: 15px;
   grid-template-columns: 50% calc(50% - 10px);
+  height: 693px;
   list-style: none;
   margin: 15px 0;
-  max-height: 820px;
   overflow-y: auto;
   padding: 3px 15px 0 15px;
 }
@@ -138,7 +138,7 @@ ul li {
   height: 200px;
   outline: 2px solid var(--border-light-gray);
   position: relative;
-  width: 250px;
+  width: 100%;
 }
 ul li img {
   display: block;
@@ -148,16 +148,16 @@ ul li img {
 }
 
 .use-overlay {
-  position: absolute;
-  display: flex;
-  justify-content: center;
   align-items: center;
-  top: 0;
-  left: 0;
-  width: 100%;
+  display: flex;
   height: 100%;
+  justify-content: center;
+  left: 0;
   opacity: 0;
+  position: absolute;
+  top: 0;
   transition: 0.5s ease;
+  width: 100%;
 }
 
 .use-overlay:hover {
@@ -171,15 +171,15 @@ ul li img {
 
 .use-overlay button {
   align-items: center;
-  border: none;
-  outline: none;
-  border-radius: 5px;
-  padding: 10px 25px;
   background-color: var(--primary-blue);
+  border-radius: 5px;
+  border: none;
   color: #fff;
   cursor: pointer;
   display: flex;
   justify-content: center;
+  outline: none;
+  padding: 10px 25px;
   position: absolute;
 }
 </style>
