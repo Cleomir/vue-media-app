@@ -20,7 +20,7 @@
       />
       <button v-show="searchKeyword" @click="clearSearchBar">&#x1F5D9;</button>
     </div>
-    <PicturesGrid :displayType="'discover'" />
+    <PicturesGrid :displayType="'discover'" :onScrollUrl="nextPageUrl" />
   </div>
 </template>
 
@@ -29,18 +29,26 @@ import axios from "axios";
 import { mapMutations } from "vuex";
 
 import PicturesGrid from "../PicturesGrid.vue";
-import { apiUrl } from "../../config";
+import { apiUrl, pexelsSearchUrl, unsplashSearchUrl } from "../../config";
 
 export default {
   data() {
     return {
       searchKeyword: "",
-      // searchedPictures: {},
       isActive: false,
       selectedStockButton: "",
       stockButtons: ["Unsplash", "Pexels"],
     };
   },
+
+  computed: {
+    nextPageUrl() {
+      return this.selectedStockButton === "Unsplash"
+        ? unsplashSearchUrl
+        : pexelsSearchUrl;
+    },
+  },
+
   methods: {
     ...mapMutations([
       "setPicturePreview",
@@ -67,6 +75,7 @@ export default {
               },
             }
           );
+
           if (status !== 200) {
             // TODO show error in modal
           } else {
@@ -79,19 +88,28 @@ export default {
       }
     },
     mapSearchedPictures(responseData) {
-      // Unsplash
-      if (responseData.results) {
-        const { total, total_pages, results } = responseData;
-        const picturesUrls = results.map((picture) => picture.urls.regular);
+      const { data, headers } = responseData;
 
-        this.setNextPage({ total, total_pages });
+      // Unsplash
+      if (data.results) {
+        // TODO refactor this into a function
+        const picturesUrls = data.results.map(
+          (picture) => picture.urls.regular
+        );
+        // extract next page link from headers
+        const nextPage = headers.link
+          .split(", ")
+          .find((page) => page.includes('rel="next'))
+          .replaceAll(/([<>;\s]+|rel="next")/g, "");
+
+        this.setNextPage({ unsplashNextPage: nextPage });
         this.setPictures(picturesUrls);
-      } else if (responseData.photos) {
+      } else if (data.photos) {
         // Pexels
-        const { next_page, photos } = responseData;
+        const { next_page, photos } = data;
         const picturesUrls = photos.map((photos) => photos.src.large);
 
-        this.setNextPage({ next_page });
+        this.setNextPage({ pexelsNextPage: next_page });
         this.setPictures(picturesUrls);
       }
     },

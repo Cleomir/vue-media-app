@@ -72,6 +72,7 @@ export default {
         const { status, data } = await this.uploadFiles({ files: base64Files });
 
         if (status !== 201) {
+          this.hideSpinner();
           // TODO show a modal with the error
         } else {
           const picturesUrls = data.map((picture) => picture.secure_url);
@@ -79,8 +80,9 @@ export default {
           this.hideSpinner();
         }
       } catch (error) {
-        // TODO show a modal with the error
         console.error(error);
+        this.hideSpinner();
+        // TODO show a modal with the error
       }
     },
 
@@ -99,12 +101,13 @@ export default {
     try {
       const { status, data } = await axios.get(`${apiUrl}/api/cloudinary/`);
       if (status !== 200) {
-        console.error(data.message);
+        // TODO show modal with error
       } else {
         const picturesUrls = data.resources.map(
           (picture) => picture.secure_url
         );
-        this.setNextPage({ nextCursor: data.next_cursor });
+
+        this.setNextPage({ cloudinaryNextPage: data.next_cursor });
         this.setPictures(picturesUrls);
       }
     } catch (error) {

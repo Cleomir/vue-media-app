@@ -26,8 +26,8 @@ import { mapMutations, mapState } from "vuex";
 import {
   cloudinaryListPicturesUrl,
   uploadPictureUrl,
-  // pexelsSearchUrl,
-  // unsplashSearchUrl,
+  pexelsSearchUrl,
+  unsplashSearchUrl,
 } from "../config";
 import Spinner from "../components/Spinner.vue";
 
@@ -63,17 +63,24 @@ export default {
           this.$refs.picturesGrid.scrollTop +
             this.$refs.picturesGrid.clientHeight >=
           this.$refs.picturesGrid.scrollHeight;
+        const {
+          cloudinaryNextPage,
+          pexelsNextPage,
+          unsplashNextPage,
+        } = this.nextPage;
 
         if (bottomOfPage) {
-          if (this.nextPage.nextCursor) {
+          if (cloudinaryNextPage || pexelsNextPage || unsplashNextPage) {
             try {
-              // TODO handle pagination for other providers
               const { status, data } = await this.onScrollFetchNextPage(
                 this.onScrollUrl,
                 {
-                  next_cursor: this.nextPage.nextCursor,
+                  next_cursor: cloudinaryNextPage,
+                  pexels_next_page: pexelsNextPage,
+                  unsplash_next_page: unsplashNextPage,
                 }
               );
+
               if (status !== 200) {
                 // TODO show modal with error
               } else {
@@ -96,12 +103,37 @@ export default {
       switch (url) {
         case cloudinaryListPicturesUrl: {
           const picturesUrl = data.resources.map((file) => file.secure_url);
-          this.setNextPage({ next_cursor: data.next_cursor || undefined });
+          this.setNextPage({
+            cloudinaryNextPage: data.next_cursor || undefined,
+          });
           this.setPictures(picturesUrl);
+          break;
+        }
+        case unsplashSearchUrl: {
+          const picturesUrls = data.data.results.map(
+            (picture) => picture.urls.regular
+          );
+          // extract next page link from headers
+          const nextPage = data.headers.link
+            .split(", ")
+            .find((page) => page.includes('rel="next'))
+            .replaceAll(/([<>;\s]+|rel="next")/g, "");
+
+          this.setNextPage({ unsplashNextPage: nextPage });
+          this.setPictures(picturesUrls);
+          break;
+        }
+        case pexelsSearchUrl: {
+          const { next_page, photos } = data.data;
+          const picturesUrls = photos.map((photos) => photos.src.large);
+
+          this.setNextPage({ pexelsNextPage: next_page });
+          this.setPictures(picturesUrls);
           break;
         }
 
         default:
+          console.error("Unsupported stock site");
           break;
       }
     },
@@ -146,7 +178,7 @@ ul {
   display: grid;
   grid-gap: 15px;
   grid-template-columns: 50% calc(50% - 10px);
-  height: 693px;
+  height: 744px;
   list-style: none;
   margin: 15px 0;
   overflow-y: auto;
