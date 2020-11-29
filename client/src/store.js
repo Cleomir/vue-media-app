@@ -9,7 +9,9 @@ const store = new Vuex.Store({
     nextPage: {},
     picturePreviewUrl: "",
     displaySpinner: false,
-    displayModal: false,
+    displaySnackBar: false,
+    snackBarMessage: "",
+    snackBarType: "",
   },
   mutations: {
     setPictures: (state, pictures) => {
@@ -30,11 +32,13 @@ const store = new Vuex.Store({
     hideSpinner: (state) => {
       state.displaySpinner = false;
     },
-    showModal: (state) => {
-      state.displayModal = true;
+    showSnackBar: (state, options) => {
+      state.snackBarMessage = options.message;
+      state.snackBarType = options.type;
+      state.displaySnackBar = true;
     },
-    hideModal: (state) => {
-      state.displayModal = false;
+    hideSnackBar: (state) => {
+      state.displaySnackBar = false;
     },
   },
 });
