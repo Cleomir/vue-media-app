@@ -2,17 +2,20 @@
   <div class="dashboard">
     <Sidebar />
     <PicturePreview />
+    <Snackbar />
   </div>
 </template>
 
 <script>
 import Sidebar from "../components/containers/Sidebar.vue";
 import PicturePreview from "../components/PicturePreview.vue";
+import Snackbar from "../components/Snackbar.vue";
 
 export default {
   components: {
     Sidebar,
     PicturePreview,
+    Snackbar,
   },
 };
 </script>

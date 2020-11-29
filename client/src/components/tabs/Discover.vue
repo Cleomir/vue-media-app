@@ -77,13 +77,19 @@ export default {
           );
 
           if (status !== 200) {
-            // TODO show error in modal
+            this.showSnackBar({
+              message: "An error has occurred. Please try again later",
+              type: "error",
+            });
           } else {
             this.mapSearchedPictures(data);
           }
         } catch (error) {
           console.error(error);
-          // TODO show error in modal
+          this.showSnackBar({
+            message: "An error has occurred. Please try again later",
+            type: "error",
+          });
         }
       }
     },
@@ -92,7 +98,6 @@ export default {
 
       // Unsplash
       if (data.results) {
-        // TODO refactor this into a function
         const picturesUrls = data.results.map(
           (picture) => picture.urls.regular
         );

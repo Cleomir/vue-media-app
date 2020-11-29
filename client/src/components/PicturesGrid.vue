@@ -82,12 +82,18 @@ export default {
               );
 
               if (status !== 200) {
-                // TODO show modal with error
+                this.showSnackBar({
+                  message: "An error has occurred. Please try again later",
+                  type: "error",
+                });
               } else {
                 this.OnScrollHandleResponse(data, this.onScrollUrl);
               }
             } catch (error) {
-              // TODO show modal with error
+              this.showSnackBar({
+                message: "An error has occurred. Please try again later",
+                type: "error",
+              });
               console.error(error);
             }
           }
@@ -147,15 +153,24 @@ export default {
 
         if (status !== 201) {
           this.hideSpinner();
-          // TODO show success or error message
+          this.showSnackBar({
+            message: "An error has occurred. Please try again later",
+            type: "error",
+          });
         } else {
           this.hideSpinner();
-          // TODO show success or error message
+          this.showSnackBar({
+            message: "Photo Uploaded successfully",
+            type: "success",
+          });
         }
       } catch (error) {
         console.error(error);
         this.hideSpinner();
-        // TODO show success or error message
+        this.showSnackBar({
+          message: "An error has occurred. Please try again later",
+          type: "error",
+        });
       }
     },
   },

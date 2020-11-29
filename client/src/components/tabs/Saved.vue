@@ -30,6 +30,7 @@ export default {
   data() {
     return {
       isActive: false,
+      selectedFile: "",
     };
   },
   computed: {
@@ -46,6 +47,8 @@ export default {
       "setPictures",
       "setNextPage",
       "clearPictures",
+      "showSnackBar",
+      "hideSnackBar",
     ]),
     openFileSelection() {
       this.$refs.fileUpload.click();
@@ -73,16 +76,27 @@ export default {
 
         if (status !== 201) {
           this.hideSpinner();
-          // TODO show a modal with the error
+          this.showSnackBar({
+            message: "An error has occurred. Please try again later",
+            type: "error",
+          });
         } else {
           const picturesUrls = data.map((picture) => picture.secure_url);
           this.setPictures(picturesUrls);
           this.hideSpinner();
+          this.showSnackBar({
+            message: "Photo Uploaded successfully",
+            type: "success",
+          });
+          this.$refs.fileUpload.value = "";
         }
       } catch (error) {
         console.error(error);
         this.hideSpinner();
-        // TODO show a modal with the error
+        this.showSnackBar({
+          message: "An error has occurred. Please try again later",
+          type: "error",
+        });
       }
     },
 
@@ -101,7 +115,10 @@ export default {
     try {
       const { status, data } = await axios.get(`${apiUrl}/api/cloudinary/`);
       if (status !== 200) {
-        // TODO show modal with error
+        this.showSnackBar({
+          message: "An error has occurred. Please try again later",
+          type: "error",
+        });
       } else {
         const picturesUrls = data.resources.map(
           (picture) => picture.secure_url
@@ -111,6 +128,10 @@ export default {
         this.setPictures(picturesUrls);
       }
     } catch (error) {
+      this.showSnackBar({
+        message: "An error has occurred. Please try again later",
+        type: "error",
+      });
       console.error(error);
     }
   },
