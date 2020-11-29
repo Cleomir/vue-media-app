@@ -5,7 +5,7 @@ import { INTERNAL_SERVER_ERROR } from "../../config/responseErrorMessages";
 import { logObject } from "../../logger";
 
 /**
- * List 
+ * List uploaded pictures to Cloudinary
  * @param req - Request object
  * @param res - Response object
  */
@@ -14,8 +14,10 @@ const listUploadedPictures = async (
   res: Response
 ): Promise<Response> => {
   const { id } = req;
+  const { next_cursor } = req.query;
   try {
-    const response = await v2.api.resources();
+    // TODO pass max_results and next_cursor in the parameters
+    const response = await v2.api.resources({ next_cursor });
 
     logObject("info", `[NODE][${id}] Response status 200`, response);
     return res.status(200).json(response);

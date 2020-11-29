@@ -68,19 +68,4 @@ export default class RequestValidator {
         pexelsNextPageUrl: pexelsNextPageUrl,
       });
   }
-
-  /**
-   * Validate Unsplash list pictures parameters
-   * @param page page number
-   * @param perPage number of pictures per page
-   */
-  public static validateListParams(
-    page: number,
-    perPage: number
-  ): ValidationResult {
-    return Joi.object({
-      page: this.page,
-      per_page: this.perPage,
-    }).validate({ page, per_page: perPage });
-  }
 }
