@@ -21,13 +21,11 @@ const searchPicturesByKeyword = async (
   const requestParams = {
     query: query.query,
     page: query.page || 1,
-    per_page: query.per_page || 15,
     pexels_next_page: query.pexels_next_page,
   };
   const validation: ValidationResult = RequestValidator.validatePexelsSearchRequest(
     requestParams.query as string,
     requestParams.page as number,
-    requestParams.per_page as number,
     requestParams.pexels_next_page as string
   );
   if (validation.error) {
@@ -47,7 +45,7 @@ const searchPicturesByKeyword = async (
       headers: {
         Authorization: env.PEXELS_API_KEY,
       },
-      params: requestParams,
+      params: requestParams.pexels_next_page ? undefined : requestParams,
     });
 
     logObject("info", `[NODE][${id}] Response status 200`, response);
