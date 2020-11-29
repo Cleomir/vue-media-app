@@ -16,7 +16,6 @@ export default class RequestValidator {
   private static baseSearchParamsValidation = {
     query: RequestValidator.query,
     page: RequestValidator.page,
-    per_page: RequestValidator.perPage,
   };
 
   /**
@@ -28,7 +27,6 @@ export default class RequestValidator {
   public static validateUnsplashSearchRequest(
     query: string,
     page: number,
-    perPage: number,
     unsplashNextPageUrl?: string
   ): ValidationResult {
     return Joi.object({
@@ -39,7 +37,6 @@ export default class RequestValidator {
       .validate({
         query,
         page,
-        per_page: perPage,
         unsplashNextPageUrl: unsplashNextPageUrl,
       });
   }
@@ -53,7 +50,6 @@ export default class RequestValidator {
   public static validatePexelsSearchRequest(
     query: string,
     page: number,
-    perPage: number,
     pexelsNextPageUrl?: string
   ): ValidationResult {
     return Joi.object({
@@ -64,7 +60,6 @@ export default class RequestValidator {
       .validate({
         query,
         page,
-        per_page: perPage,
         pexelsNextPageUrl: pexelsNextPageUrl,
       });
   }
