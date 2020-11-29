@@ -22,11 +22,13 @@ const searchPicturesByKeyword = async (
     query: query.query,
     page: query.page || 1,
     per_page: query.per_page || 10,
+    unsplash_next_page: query.unsplash_next_page,
   };
-  const validation: ValidationResult = RequestValidator.validateSearchParams(
+  const validation: ValidationResult = RequestValidator.validateUnsplashSearchRequest(
     requestParams.query as string,
     requestParams.page as number,
-    requestParams.per_page as number
+    requestParams.per_page as number,
+    requestParams.unsplash_next_page as string
   );
   if (validation.error) {
     logger.error(`[NODE][${req.id}] Response status 400`);
@@ -34,7 +36,9 @@ const searchPicturesByKeyword = async (
   }
 
   // send request to Unsplash
-  const apiUrl = "https://api.unsplash.com/search/photos";
+  const apiUrl = requestParams.unsplash_next_page
+    ? (requestParams.unsplash_next_page as string)
+    : "https://api.unsplash.com/search/photos";
   logger.info(`[NODE][${id}] Request to ${apiUrl}`);
   try {
     const response: Record<string, unknown> = await axiosRequest({

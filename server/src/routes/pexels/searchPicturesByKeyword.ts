@@ -22,11 +22,13 @@ const searchPicturesByKeyword = async (
     query: query.query,
     page: query.page || 1,
     per_page: query.per_page || 15,
+    pexels_next_page: query.pexels_next_page,
   };
-  const validation: ValidationResult = RequestValidator.validateSearchParams(
+  const validation: ValidationResult = RequestValidator.validatePexelsSearchRequest(
     requestParams.query as string,
     requestParams.page as number,
-    requestParams.per_page as number
+    requestParams.per_page as number,
+    requestParams.pexels_next_page as string
   );
   if (validation.error) {
     logger.error(`[NODE][${req.id}] Response status 400`);
@@ -34,7 +36,9 @@ const searchPicturesByKeyword = async (
   }
 
   // send request to Pexels
-  const apiUrl = "https://api.pexels.com/v1/search";
+  const apiUrl = requestParams.pexels_next_page
+    ? (requestParams.pexels_next_page as string)
+    : "https://api.pexels.com/v1/search";
   logger.info(`[NODE][${id}] Request to ${apiUrl}`);
   try {
     const response: Record<string, unknown> = await axiosRequest({
