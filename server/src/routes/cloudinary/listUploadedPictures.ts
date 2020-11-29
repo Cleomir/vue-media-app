@@ -2,7 +2,9 @@ import { Request, Response } from "express";
 import { v2 } from "cloudinary";
 
 import { INTERNAL_SERVER_ERROR } from "../../config/responseErrorMessages";
-import { logObject } from "../../logger";
+import logger, { logObject } from "../../logger";
+import { ValidationResult } from "joi";
+import RequestValidator from "../../validation/RequestValidator";
 
 /**
  * List uploaded pictures to Cloudinary
@@ -16,7 +18,14 @@ const listUploadedPictures = async (
   const { id } = req;
   const { next_cursor } = req.query;
   try {
-    // TODO pass max_results and next_cursor in the parameters
+    const validation: ValidationResult = RequestValidator.validateCloudinaryListUploadedPictures(
+      next_cursor as string
+    );
+    if (validation.error) {
+      logger.error(`[NODE][${req.id}] Response status 400`);
+      return res.status(400).json({ message: validation.error.message });
+    }
+
     const response = await v2.api.resources({ next_cursor });
 
     logObject("info", `[NODE][${id}] Response status 200`, response);

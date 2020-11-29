@@ -6,7 +6,7 @@ import Joi, { ValidationResult } from "joi";
 export default class RequestValidator {
   private static query = Joi.string().trim().min(1);
   private static page = Joi.number().min(1);
-  private static perPage = Joi.number().min(1).max(80);
+  private static cloudinaryNextCursor = Joi.string().min(64).max(64);
   private static unsplashNextPageUrlPattern = Joi.string().pattern(
     /^https:\/\/api\.unsplash\.com\/search\/photos/
   );
@@ -22,7 +22,6 @@ export default class RequestValidator {
    * Validate Unsplash search pictures parameters
    * @param query keyword to be searched
    * @param page page number
-   * @param perPage number of pictures per page
    */
   public static validateUnsplashSearchRequest(
     query: string,
@@ -45,7 +44,6 @@ export default class RequestValidator {
    * Validate Pexels search pictures parameters
    * @param query keyword to be searched
    * @param page page number
-   * @param perPage number of pictures per page
    */
   public static validatePexelsSearchRequest(
     query: string,
@@ -62,5 +60,11 @@ export default class RequestValidator {
         page,
         pexelsNextPageUrl: pexelsNextPageUrl,
       });
+  }
+
+  public static validateCloudinaryListUploadedPictures(
+    nextCursor: string
+  ): ValidationResult {
+    return this.cloudinaryNextCursor.validate(nextCursor);
   }
 }
