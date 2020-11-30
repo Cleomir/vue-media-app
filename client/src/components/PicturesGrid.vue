@@ -51,6 +51,7 @@ export default {
       "setNextPage",
       "setPictures",
       "clearPictures",
+      "showSnackBar",
     ]),
     selectPicture(url) {
       this.isSelected = url;
@@ -160,7 +161,7 @@ export default {
         } else {
           this.hideSpinner();
           this.showSnackBar({
-            message: "Photo Uploaded successfully",
+            message: "Photo saved successfully",
             type: "success",
           });
         }

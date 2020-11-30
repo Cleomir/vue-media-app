@@ -55,6 +55,7 @@ export default {
       "setPictures",
       "setNextPage",
       "clearPictures",
+      "showSnackBar",
     ]),
     clearSearchBar() {
       this.searchKeyword = "";
