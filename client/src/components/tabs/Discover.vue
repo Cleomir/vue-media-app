@@ -20,7 +20,10 @@
       />
       <button v-show="searchKeyword" @click="clearSearchBar">&#x1F5D9;</button>
     </div>
-    <PicturesGrid :displayType="'discover'" :onScrollUrl="nextPageUrl" />
+    <PicturesGrid
+      :displayType="'discover'"
+      :onScrollUrl="selectedStockSiteUrl"
+    />
   </div>
 </template>
 
@@ -29,7 +32,7 @@ import axios from "axios";
 import { mapMutations } from "vuex";
 
 import PicturesGrid from "../PicturesGrid.vue";
-import { apiUrl, pexelsSearchUrl, unsplashSearchUrl } from "../../config";
+import { pexelsSearchUrl, unsplashSearchUrl } from "../../config";
 
 export default {
   data() {
@@ -37,16 +40,9 @@ export default {
       searchKeyword: "",
       isActive: false,
       selectedStockButton: "",
+      selectedStockSiteUrl: "",
       stockButtons: ["Unsplash", "Pexels"],
     };
-  },
-
-  computed: {
-    nextPageUrl() {
-      return this.selectedStockButton === "Unsplash"
-        ? unsplashSearchUrl
-        : pexelsSearchUrl;
-    },
   },
 
   methods: {
@@ -64,18 +60,19 @@ export default {
       this.selectedStockButton = site;
     },
     async searchStockPictures() {
+      this.selectedStockSiteUrl =
+        this.selectedStockButton === "Unsplash"
+          ? unsplashSearchUrl
+          : pexelsSearchUrl;
+
       if (this.searchKeyword && this.selectedStockButton) {
         this.clearPictures();
         try {
-          const stockSite = this.selectedStockButton.toLowerCase();
-          const { status, data } = await axios.get(
-            `${apiUrl}/api/${stockSite}/search`,
-            {
-              params: {
-                query: this.searchKeyword,
-              },
-            }
-          );
+          const { status, data } = await axios.get(this.selectedStockSiteUrl, {
+            params: {
+              query: this.searchKeyword,
+            },
+          });
 
           if (status !== 200) {
             this.showSnackBar({

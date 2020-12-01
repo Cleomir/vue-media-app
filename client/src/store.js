@@ -19,6 +19,7 @@ const store = new Vuex.Store({
     },
     clearPictures: (state) => {
       state.pictures = [];
+      state.nextPage = {};
     },
     setNextPage: (state, nextPage) => {
       state.nextPage = nextPage;
