@@ -4,23 +4,29 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { resolve } from 'path';
 import history from 'connect-history-api-fallback';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { LoggerModule } from './logger/logger.module';
-import appEnvConfig from './app.config';
 import { RequestLoggerService } from './logger/request-logger/request-logger.service';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { PexelsModule } from './pexels/pexels.module';
+import { UnsplashModule } from './unsplash/unsplash.module';
+import appEnvConfig, { validate } from './app.config';
+import { RequestLoggerModule } from './logger/request-logger/request-logger.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ load: [appEnvConfig], isGlobal: true }),
+    ConfigModule.forRoot({ load: [appEnvConfig], isGlobal: true, validate }),
     ServeStaticModule.forRoot({
       rootPath: resolve(__dirname, '../../client/dist'),
       exclude: ['/api*'],
     }),
     LoggerModule,
+    RequestLoggerModule,
+    CloudinaryModule,
+    PexelsModule,
+    UnsplashModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
