@@ -1,9 +1,12 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import winston, { format, createLogger, transports } from 'winston';
 import { TransformableInfo } from 'logform';
 import { inspect } from 'util';
+import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
+/**
+ * Custom Winston logger
+ */
 @Injectable()
 export class LoggerService extends Logger {
   private readonly logger: winston.Logger;
@@ -21,11 +24,11 @@ export class LoggerService extends Logger {
     const logger = createLogger({
       exceptionHandlers: [
         new transports.File({
-          filename: 'logs/aggregated.log',
+          filename: 'logs/laseraway.log',
         }),
       ],
       format: format.combine(format.timestamp(), logFormat),
-      transports: [new transports.File({ filename: 'logs/aggregated.log' })],
+      transports: [new transports.File({ filename: 'logs/laseraway.log' })],
     });
 
     logger.exitOnError = false;
