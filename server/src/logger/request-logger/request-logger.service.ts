@@ -1,7 +1,8 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
-import { LoggerService } from 'src/logger/logger.service';
 import { v4 as uuidv4 } from 'uuid';
 import { Request, Response, NextFunction } from 'express';
+
+import { LoggerService } from '../logger.service';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
