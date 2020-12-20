@@ -27,7 +27,6 @@ export class PexelsService {
     const apiUrl: string = searchPicturesByKeywordDto.pexels_next_page
       ? searchPicturesByKeywordDto.pexels_next_page
       : 'https://api.pexels.com/v1/search';
-
     const response: AxiosResponse<any> = await this.axiosService.request({
       url: apiUrl,
       method: 'GET',
