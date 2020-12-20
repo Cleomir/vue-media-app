@@ -1,16 +1,15 @@
 {
   "compilerOptions": {
-    "allowJs": false,
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "CommonJS",
-    "moduleResolution": "node",
-    "noEmitOnError": true,
-    "outDir": "dist",
+    "target": "es2017",
     "sourceMap": true,
-    "strict": true,
-    "target": "es5",
-  },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "tests/**/*.ts"]
+    "outDir": "dist",
+    "baseUrl": "./",
+    "incremental": true
+  }
 }
