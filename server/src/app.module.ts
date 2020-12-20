@@ -11,6 +11,7 @@ import { PexelsModule } from './pexels/pexels.module';
 import { UnsplashModule } from './unsplash/unsplash.module';
 import appEnvConfig, { validate } from './app.config';
 import { RequestLoggerModule } from './logger/request-logger/request-logger.module';
+import { HelpersModule } from './helpers/helpers.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { RequestLoggerModule } from './logger/request-logger/request-logger.modu
     CloudinaryModule,
     PexelsModule,
     UnsplashModule,
+    HelpersModule,
   ],
   controllers: [],
   providers: [],
