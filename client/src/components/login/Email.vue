@@ -50,7 +50,6 @@ export default {
   align-items: center;
   height: 100vh;
 }
-
 .card {
   width: 680px;
   padding: 30px;
@@ -59,11 +58,9 @@ export default {
   border: 2px solid var(--border-light-gray);
   border-radius: 5px;
 }
-
 .error-label {
   color: var(--error-red);
 }
-
 input {
   display: block;
   width: 80%;
@@ -73,7 +70,6 @@ input {
   color: #000;
   border-radius: 5px;
 }
-
 button {
   border: none;
   display: block;

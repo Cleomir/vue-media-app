@@ -13,19 +13,16 @@
   --text-dark-blue: #16315d;
   --text-gray: #7e8da5;
 }
-
 * {
   box-sizing: border-box;
   color: var(--text-gray);
   font-family: Avenir, Helvetica, Arial, sans-serif;
   font-weight: 300;
 }
-
 body {
   background-color: #f7f9fc;
   margin: 0;
 }
-
 .icon {
   color: #fff;
   font-size: 1.2rem;

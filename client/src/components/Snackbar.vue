@@ -21,10 +21,8 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
-
 import checkSVG from "../assets/check.svg";
 import errorSVG from "../assets/error.svg";
-
 export default {
   data() {
     return {
@@ -48,11 +46,9 @@ export default {
 .success {
   background-color: var(--primary-blue);
 }
-
 .error {
   background-color: var(--error-red);
 }
-
 .snackbar {
   border-radius: 5px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -74,14 +70,12 @@ export default {
   padding-left: 16px;
   vertical-align: top;
 }
-
 .fade-enter-active {
   animation: fadein 1s;
 }
 .fade-leave-active {
   animation: fadeout 1s;
 }
-
 @keyframes fadein {
   from {
     right: -16%;
@@ -92,7 +86,6 @@ export default {
     opacity: 1;
   }
 }
-
 @keyframes fadeout {
   from {
     right: 3%;

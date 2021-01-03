@@ -1,14 +1,11 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 import Login from "../views/Login.vue";
 import Dashboard from "../views/Dashboard.vue";
 import Saved from "../components/tabs/Saved.vue";
 import Discover from "../components/tabs/Discover.vue";
 
-Vue.use(VueRouter);
-
-const routes = [
+const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     component: Login,
@@ -32,9 +29,8 @@ const routes = [
   },
 ];
 
-const router = new VueRouter({
-  mode: "history",
-  base: process.env.BASE_URL,
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
   routes,
 });
 

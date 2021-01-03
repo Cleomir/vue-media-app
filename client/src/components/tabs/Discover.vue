@@ -30,10 +30,8 @@
 <script>
 import axios from "axios";
 import { mapMutations } from "vuex";
-
 import PicturesGrid from "../PicturesGrid.vue";
 import { pexelsSearchUrl, unsplashSearchUrl } from "../../config";
-
 export default {
   data() {
     return {
@@ -44,7 +42,6 @@ export default {
       stockButtons: ["Unsplash", "Pexels"],
     };
   },
-
   methods: {
     ...mapMutations([
       "setPicturePreview",
@@ -64,7 +61,6 @@ export default {
         this.selectedStockButton === "Unsplash"
           ? unsplashSearchUrl
           : pexelsSearchUrl;
-
       if (this.searchKeyword && this.selectedStockButton) {
         this.clearPictures();
         try {
@@ -73,7 +69,6 @@ export default {
               query: this.searchKeyword,
             },
           });
-
           if (status !== 200) {
             this.showSnackBar({
               message: "An error has occurred. Please try again later",
@@ -93,7 +88,6 @@ export default {
     },
     mapSearchedPictures(responseData) {
       const { data, headers } = responseData;
-
       // Unsplash
       if (data.results) {
         const picturesUrls = data.results.map(
@@ -104,14 +98,12 @@ export default {
           .split(", ")
           .find((page) => page.includes('rel="next'))
           .replaceAll(/([<>;\s]+|rel="next")/g, "");
-
         this.setNextPage({ unsplashNextPage: nextPage });
         this.setPictures(picturesUrls);
       } else if (data.photos) {
         // Pexels
         const { next_page, photos } = data;
         const picturesUrls = photos.map((photos) => photos.src.large);
-
         this.setNextPage({ pexelsNextPage: next_page });
         this.setPictures(picturesUrls);
       }
@@ -133,7 +125,6 @@ export default {
   display: flex;
   justify-content: space-around;
 }
-
 .stock-buttons button {
   background-color: #fff;
   border-radius: 5px;
@@ -144,19 +135,16 @@ export default {
   width: 30%;
   outline: none;
 }
-
 button.is-active {
   border: 2px solid var(--primary-blue);
   color: var(--primary-blue);
 }
-
 .search-bar {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
 .search-bar button {
   background-color: #fff;
   border: none;
@@ -167,7 +155,6 @@ button.is-active {
   right: 25px;
   font-weight: 600;
 }
-
 input[type="text"] {
   border-radius: 5px;
   border: 2px solid var(--border-light-gray);
@@ -177,7 +164,6 @@ input[type="text"] {
   padding: 10px;
   width: calc(100% - 30px);
 }
-
 input[type="text"]:focus {
   border: 2px solid var(--primary-blue);
 }

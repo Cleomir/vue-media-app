@@ -22,7 +22,6 @@
 <script>
 import axios from "axios";
 import { mapMutations, mapState } from "vuex";
-
 import {
   cloudinaryListPicturesUrl,
   uploadPictureUrl,
@@ -30,7 +29,6 @@ import {
   unsplashSearchUrl,
 } from "../config";
 import Spinner from "../components/Spinner.vue";
-
 export default {
   props: ["displayType", "onScrollUrl"],
   data() {
@@ -38,11 +36,9 @@ export default {
       isSelected: "",
     };
   },
-
   computed: {
     ...mapState(["displaySpinner", "pictures", "nextPage"]),
   },
-
   methods: {
     ...mapMutations([
       "setPicturePreview",
@@ -57,7 +53,6 @@ export default {
       this.isSelected = url;
       this.setPicturePreview(url);
     },
-
     async onScroll() {
       this.$refs.picturesGrid.onscroll = async () => {
         const bottomOfPage =
@@ -69,7 +64,6 @@ export default {
           pexelsNextPage,
           unsplashNextPage,
         } = this.nextPage;
-
         if (bottomOfPage) {
           if (cloudinaryNextPage || pexelsNextPage || unsplashNextPage) {
             try {
@@ -81,7 +75,6 @@ export default {
                   unsplash_next_page: unsplashNextPage,
                 }
               );
-
               if (status !== 200) {
                 this.showSnackBar({
                   message: "An error has occurred. Please try again later",
@@ -101,11 +94,9 @@ export default {
         }
       };
     },
-
     async onScrollFetchNextPage(url, params) {
       return axios.get(url, { params: { ...params } });
     },
-
     OnScrollHandleResponse(data, url) {
       switch (url) {
         case cloudinaryListPicturesUrl: {
@@ -125,7 +116,6 @@ export default {
             .split(", ")
             .find((page) => page.includes('rel="next'))
             .replaceAll(/([<>;\s]+|rel="next")/g, "");
-
           this.setNextPage({ unsplashNextPage: nextPage });
           this.setPictures(picturesUrls);
           break;
@@ -133,12 +123,10 @@ export default {
         case pexelsSearchUrl: {
           const { next_page, photos } = data.data;
           const picturesUrls = photos.map((photos) => photos.src.large);
-
           this.setNextPage({ pexelsNextPage: next_page });
           this.setPictures(picturesUrls);
           break;
         }
-
         default:
           console.error("Unsupported stock site");
           break;
@@ -146,12 +134,10 @@ export default {
     },
     async usePicture(url) {
       this.showSpinner();
-
       try {
         const { status } = await axios.post(uploadPictureUrl, {
           files: [url],
         });
-
         if (status !== 201) {
           this.hideSpinner();
           this.showSnackBar({
@@ -175,7 +161,6 @@ export default {
       }
     },
   },
-
   mounted() {
     this.onScroll();
   },
@@ -189,7 +174,6 @@ export default {
 .is-selected {
   outline: 3px solid red;
 }
-
 ul {
   display: grid;
   grid-gap: 15px;
@@ -213,7 +197,6 @@ ul li img {
   object-fit: cover;
   width: inherit;
 }
-
 .use-overlay {
   align-items: center;
   display: flex;

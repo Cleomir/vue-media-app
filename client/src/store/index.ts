@@ -1,11 +1,8 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import { createStore } from "vuex";
 
-Vue.use(Vuex);
-
-const store = new Vuex.Store({
+export default createStore({
   state: {
-    pictures: [],
+    pictures: [] as string[],
     nextPage: {},
     picturePreviewUrl: "",
     displaySpinner: false,
@@ -42,6 +39,6 @@ const store = new Vuex.Store({
       state.displaySnackBar = false;
     },
   },
+  actions: {},
+  modules: {},
 });
-
-export default store;

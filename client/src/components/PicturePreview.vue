@@ -7,7 +7,6 @@
 
 <script>
 import { mapState } from "vuex";
-
 export default {
   computed: {
     ...mapState(["picturePreviewUrl"]),
@@ -23,7 +22,6 @@ main {
   justify-content: center;
   padding: 15% 15%;
 }
-
 main img {
   height: 100%;
   object-fit: cover;

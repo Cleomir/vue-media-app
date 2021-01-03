@@ -23,18 +23,15 @@ export default {
   color: var(--primary-blue);
   border-bottom: 2px solid var(--primary-blue);
 }
-
 ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-
 li {
   display: inline-block;
   width: 50%;
 }
-
 li a {
   display: block;
   padding: 15px 0;

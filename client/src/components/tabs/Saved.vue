@@ -21,11 +21,9 @@
 <script>
 import axios from "axios";
 import { mapMutations, mapState } from "vuex";
-
 import PicturesGrid from "../PicturesGrid";
 import Spinner from "../Spinner.vue";
 import { apiUrl } from "../../config";
-
 export default {
   data() {
     return {
@@ -53,7 +51,6 @@ export default {
     openFileSelection() {
       this.$refs.fileUpload.click();
     },
-
     fileToBase64(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -62,7 +59,6 @@ export default {
         reader.onerror = (error) => reject(error);
       });
     },
-
     async handleFileChange(event) {
       try {
         // convert files to base64
@@ -73,7 +69,6 @@ export default {
         );
         const base64Files = await Promise.all(base64FilePromises);
         const { status, data } = await this.uploadFiles({ files: base64Files });
-
         if (status !== 201) {
           this.hideSpinner();
           this.showSnackBar({
@@ -99,7 +94,6 @@ export default {
         });
       }
     },
-
     async uploadFiles(requestBody) {
       return axios.post(
         "http://localhost:3000/api/cloudinary/upload",
@@ -111,7 +105,6 @@ export default {
     this.isActive = true;
     this.setPicturePreview("");
     this.clearPictures();
-
     try {
       const { status, data } = await axios.get(`${apiUrl}/api/cloudinary/`);
       if (status !== 200) {
@@ -123,7 +116,6 @@ export default {
         const picturesUrls = data.resources.map(
           (picture) => picture.secure_url
         );
-
         this.setNextPage({ cloudinaryNextPage: data.next_cursor });
         this.setPictures(picturesUrls);
       }
@@ -147,7 +139,6 @@ div {
   position: relative;
   text-align: center;
 }
-
 .upload-overlay {
   background-color: #fff;
   bottom: 15px;
@@ -155,7 +146,6 @@ div {
   position: fixed;
   width: calc(30% - 27px);
 }
-
 .upload-overlay button {
   align-items: center;
   background-color: var(--primary-blue);
