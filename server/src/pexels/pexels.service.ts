@@ -24,8 +24,8 @@ export class PexelsService {
       requestId,
       searchPicturesByKeywordDto,
     );
-    const apiUrl: string = searchPicturesByKeywordDto.pexels_next_page
-      ? searchPicturesByKeywordDto.pexels_next_page
+    const apiUrl: string = searchPicturesByKeywordDto.pexelsNextPage
+      ? searchPicturesByKeywordDto.pexelsNextPage
       : 'https://api.pexels.com/v1/search';
     const response: AxiosResponse<any> = await this.axiosService.request({
       url: apiUrl,
@@ -33,7 +33,7 @@ export class PexelsService {
       headers: {
         Authorization: this.configService.get<string>('PEXELS_API_KEY'),
       },
-      params: searchPicturesByKeywordDto.pexels_next_page
+      params: searchPicturesByKeywordDto.pexelsNextPage
         ? undefined
         : searchPicturesByKeywordDto,
     });

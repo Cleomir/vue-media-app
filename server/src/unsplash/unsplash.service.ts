@@ -24,8 +24,8 @@ export class UnsplashService {
       requestId,
       searchPicturesByKeywordDto,
     );
-    const apiUrl: string = searchPicturesByKeywordDto.unsplash_next_page
-      ? searchPicturesByKeywordDto.unsplash_next_page
+    const apiUrl: string = searchPicturesByKeywordDto.unsplashNextPage
+      ? searchPicturesByKeywordDto.unsplashNextPage
       : 'https://api.unsplash.com/search/photos';
     const response: AxiosResponse<any> = await this.axiosService.request({
       url: apiUrl,
@@ -36,7 +36,7 @@ export class UnsplashService {
           'UNSPLASH_API_KEY',
         )}`,
       },
-      params: searchPicturesByKeywordDto.unsplash_next_page
+      params: searchPicturesByKeywordDto.unsplashNextPage
         ? undefined
         : searchPicturesByKeywordDto,
     });
