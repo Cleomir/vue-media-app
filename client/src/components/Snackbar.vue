@@ -19,11 +19,14 @@
   </transition>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import { mapState, mapMutations } from "vuex";
+
 import checkSVG from "../assets/check.svg";
 import errorSVG from "../assets/error.svg";
-export default {
+
+export default defineComponent({
   data() {
     return {
       checkIcon: checkSVG,
@@ -35,11 +38,8 @@ export default {
   },
   methods: {
     ...mapMutations(["hideSnackBar"]),
-    fadeIn() {
-      setTimeout(() => this.hideSnackBar(), 3000);
-    },
   },
-};
+});
 </script>
 
 <style scoped>

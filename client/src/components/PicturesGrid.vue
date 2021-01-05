@@ -19,8 +19,9 @@
   </ul>
 </template>
 
-<script>
+<script lang="ts">
 import axios from "axios";
+import { defineComponent } from "vue";
 import { mapMutations, mapState } from "vuex";
 import {
   cloudinaryListPicturesUrl,
@@ -29,7 +30,8 @@ import {
   unsplashSearchUrl,
 } from "../config";
 import Spinner from "../components/Spinner.vue";
-export default {
+
+export default defineComponent({
   props: ["displayType", "onScrollUrl"],
   data() {
     return {
@@ -70,9 +72,9 @@ export default {
               const { status, data } = await this.onScrollFetchNextPage(
                 this.onScrollUrl,
                 {
-                  next_cursor: cloudinaryNextPage,
-                  pexels_next_page: pexelsNextPage,
-                  unsplash_next_page: unsplashNextPage,
+                  nextCursor: cloudinaryNextPage,
+                  pexelsNextPage: pexelsNextPage,
+                  unsplashNextPage: unsplashNextPage,
                 }
               );
               if (status !== 200) {
@@ -121,9 +123,9 @@ export default {
           break;
         }
         case pexelsSearchUrl: {
-          const { next_page, photos } = data.data;
+          const { nextPage, photos } = data.data;
           const picturesUrls = photos.map((photos) => photos.src.large);
-          this.setNextPage({ pexelsNextPage: next_page });
+          this.setNextPage({ pexelsNextPage: nextPage });
           this.setPictures(picturesUrls);
           break;
         }
@@ -167,7 +169,7 @@ export default {
   components: {
     Spinner,
   },
-};
+});
 </script>
 
 <style scoped>

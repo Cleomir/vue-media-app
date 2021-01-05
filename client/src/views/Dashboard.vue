@@ -7,16 +7,19 @@
 </template>
 
 <script>
+import { defineComponent } from "vue";
+
 import Sidebar from "../components/containers/Sidebar.vue";
 import PicturePreview from "../components/PicturePreview.vue";
 import Snackbar from "../components/Snackbar.vue";
-export default {
+
+export default defineComponent({
   components: {
     Sidebar,
     PicturePreview,
     Snackbar,
   },
-};
+});
 </script>
 
 <style scoped>

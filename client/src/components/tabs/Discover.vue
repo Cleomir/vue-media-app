@@ -27,12 +27,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import axios from "axios";
+import { defineComponent } from "vue";
 import { mapMutations } from "vuex";
 import PicturesGrid from "../PicturesGrid.vue";
 import { pexelsSearchUrl, unsplashSearchUrl } from "../../config";
-export default {
+
+export default defineComponent({
   data() {
     return {
       searchKeyword: "",
@@ -102,9 +104,9 @@ export default {
         this.setPictures(picturesUrls);
       } else if (data.photos) {
         // Pexels
-        const { next_page, photos } = data;
+        const { nextPage, photos } = data;
         const picturesUrls = photos.map((photos) => photos.src.large);
-        this.setNextPage({ pexelsNextPage: next_page });
+        this.setNextPage({ pexelsNextPage: nextPage });
         this.setPictures(picturesUrls);
       }
     },
@@ -117,7 +119,7 @@ export default {
   components: {
     PicturesGrid,
   },
-};
+});
 </script>
 
 <style scoped>

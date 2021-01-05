@@ -18,13 +18,15 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import axios from "axios";
+import { defineComponent } from "vue";
 import { mapMutations, mapState } from "vuex";
-import PicturesGrid from "../PicturesGrid";
+import PicturesGrid from "../PicturesGrid.vue";
 import Spinner from "../Spinner.vue";
 import { apiUrl } from "../../config";
-export default {
+
+export default defineComponent({
   data() {
     return {
       isActive: false,
@@ -131,7 +133,7 @@ export default {
     PicturesGrid,
     Spinner,
   },
-};
+});
 </script>
 
 <style scoped>
