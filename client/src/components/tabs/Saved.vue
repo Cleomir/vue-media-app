@@ -51,9 +51,9 @@ export default defineComponent({
       "hideSnackBar",
     ]),
     openFileSelection() {
-      this.$refs.fileUpload.click();
+      (this.$refs as Record<string, any>).fileUpload.click();
     },
-    fileToBase64(file) {
+    fileToBase64(file: Blob) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -61,12 +61,12 @@ export default defineComponent({
         reader.onerror = (error) => reject(error);
       });
     },
-    async handleFileChange(event) {
+    async handleFileChange(event: any) {
       try {
         // convert files to base64
         this.showSpinner();
-        const base64FilePromises = [];
-        event.target.files.forEach((file) =>
+        const base64FilePromises: Promise<unknown>[] = [];
+        event.target.files.forEach((file: Blob) =>
           base64FilePromises.push(this.fileToBase64(file))
         );
         const base64Files = await Promise.all(base64FilePromises);
@@ -78,14 +78,16 @@ export default defineComponent({
             type: "error",
           });
         } else {
-          const picturesUrls = data.map((picture) => picture.secure_url);
+          const picturesUrls = data.map(
+            (picture: Record<string, any>) => picture.secure_url
+          );
           this.setPictures(picturesUrls);
           this.hideSpinner();
           this.showSnackBar({
             message: "Photo Uploaded successfully",
             type: "success",
           });
-          this.$refs.fileUpload.value = "";
+          (this.$refs as Record<string, any>).fileUpload.value = "";
         }
       } catch (error) {
         console.error(error);
@@ -96,7 +98,7 @@ export default defineComponent({
         });
       }
     },
-    async uploadFiles(requestBody) {
+    async uploadFiles(requestBody: Record<string, any>) {
       return axios.post(
         "http://localhost:3000/api/cloudinary/upload",
         requestBody
@@ -116,7 +118,7 @@ export default defineComponent({
         });
       } else {
         const picturesUrls = data.resources.map(
-          (picture) => picture.secure_url
+          (picture: Record<string, any>) => picture.secure_url
         );
         this.setNextPage({ cloudinaryNextPage: data.next_cursor });
         this.setPictures(picturesUrls);

@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { defineComponent } from "vue";
 import { mapMutations } from "vuex";
 import PicturesGrid from "../PicturesGrid.vue";
@@ -55,7 +55,7 @@ export default defineComponent({
     clearSearchBar() {
       this.searchKeyword = "";
     },
-    selectStockSite(site) {
+    selectStockSite(site: string) {
       this.selectedStockButton = site;
     },
     async searchStockPictures() {
@@ -88,24 +88,26 @@ export default defineComponent({
         }
       }
     },
-    mapSearchedPictures(responseData) {
+    mapSearchedPictures(responseData: AxiosResponse) {
       const { data, headers } = responseData;
       // Unsplash
       if (data.results) {
         const picturesUrls = data.results.map(
-          (picture) => picture.urls.regular
+          (picture: Record<string, any>) => picture.urls.regular
         );
         // extract next page link from headers
         const nextPage = headers.link
           .split(", ")
-          .find((page) => page.includes('rel="next'))
+          .find((page: string) => page.includes('rel="next'))
           .replaceAll(/([<>;\s]+|rel="next")/g, "");
         this.setNextPage({ unsplashNextPage: nextPage });
         this.setPictures(picturesUrls);
       } else if (data.photos) {
         // Pexels
         const { nextPage, photos } = data;
-        const picturesUrls = photos.map((photos) => photos.src.large);
+        const picturesUrls = photos.map(
+          (photos: Record<string, any>) => photos.src.large
+        );
         this.setNextPage({ pexelsNextPage: nextPage });
         this.setPictures(picturesUrls);
       }

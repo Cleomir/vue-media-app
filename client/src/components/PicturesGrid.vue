@@ -51,16 +51,19 @@ export default defineComponent({
       "clearPictures",
       "showSnackBar",
     ]),
-    selectPicture(url) {
+    selectPicture(url: string) {
       this.isSelected = url;
       this.setPicturePreview(url);
     },
     async onScroll() {
-      this.$refs.picturesGrid.onscroll = async () => {
+      (this.$refs as Record<
+        string,
+        Record<string, unknown>
+      >).picturesGrid.onscroll = async () => {
         const bottomOfPage =
-          this.$refs.picturesGrid.scrollTop +
-            this.$refs.picturesGrid.clientHeight >=
-          this.$refs.picturesGrid.scrollHeight;
+          (this.$refs as Record<string, any>).picturesGrid.scrollTop +
+            (this.$refs.picturesGrid as Record<string, any>).clientHeight >=
+          (this.$refs.picturesGrid as Record<string, any>).scrollHeight;
         const {
           cloudinaryNextPage,
           pexelsNextPage,
@@ -96,13 +99,15 @@ export default defineComponent({
         }
       };
     },
-    async onScrollFetchNextPage(url, params) {
+    async onScrollFetchNextPage(url: string, params: Record<string, any>) {
       return axios.get(url, { params: { ...params } });
     },
-    OnScrollHandleResponse(data, url) {
+    OnScrollHandleResponse(data: Record<string, any>, url: string) {
       switch (url) {
         case cloudinaryListPicturesUrl: {
-          const picturesUrl = data.resources.map((file) => file.secure_url);
+          const picturesUrl = data.resources.map(
+            (file: Record<string, any>) => file.secure_url
+          );
           this.setNextPage({
             cloudinaryNextPage: data.next_cursor || undefined,
           });
@@ -111,12 +116,12 @@ export default defineComponent({
         }
         case unsplashSearchUrl: {
           const picturesUrls = data.data.results.map(
-            (picture) => picture.urls.regular
+            (picture: Record<string, any>) => picture.urls.regular
           );
           // extract next page link from headers
           const nextPage = data.headers.link
             .split(", ")
-            .find((page) => page.includes('rel="next'))
+            .find((page: string) => page.includes('rel="next'))
             .replaceAll(/([<>;\s]+|rel="next")/g, "");
           this.setNextPage({ unsplashNextPage: nextPage });
           this.setPictures(picturesUrls);
@@ -124,7 +129,9 @@ export default defineComponent({
         }
         case pexelsSearchUrl: {
           const { nextPage, photos } = data.data;
-          const picturesUrls = photos.map((photos) => photos.src.large);
+          const picturesUrls = photos.map(
+            (photos: Record<string, any>) => photos.src.large
+          );
           this.setNextPage({ pexelsNextPage: nextPage });
           this.setPictures(picturesUrls);
           break;
@@ -134,7 +141,7 @@ export default defineComponent({
           break;
       }
     },
-    async usePicture(url) {
+    async usePicture(url: string) {
       this.showSpinner();
       try {
         const { status } = await axios.post(uploadPictureUrl, {
