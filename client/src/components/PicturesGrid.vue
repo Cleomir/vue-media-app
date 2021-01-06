@@ -19,8 +19,9 @@
   </ul>
 </template>
 
-<script>
+<script lang="ts">
 import axios from "axios";
+import { defineComponent } from "vue";
 import { mapMutations, mapState } from "vuex";
 import {
   cloudinaryListPicturesUrl,
@@ -29,7 +30,8 @@ import {
   unsplashSearchUrl,
 } from "../config";
 import Spinner from "../components/Spinner.vue";
-export default {
+
+export default defineComponent({
   props: ["displayType", "onScrollUrl"],
   data() {
     return {
@@ -49,16 +51,19 @@ export default {
       "clearPictures",
       "showSnackBar",
     ]),
-    selectPicture(url) {
+    selectPicture(url: string) {
       this.isSelected = url;
       this.setPicturePreview(url);
     },
     async onScroll() {
-      this.$refs.picturesGrid.onscroll = async () => {
+      (this.$refs as Record<
+        string,
+        Record<string, unknown>
+      >).picturesGrid.onscroll = async () => {
         const bottomOfPage =
-          this.$refs.picturesGrid.scrollTop +
-            this.$refs.picturesGrid.clientHeight >=
-          this.$refs.picturesGrid.scrollHeight;
+          (this.$refs as Record<string, any>).picturesGrid.scrollTop +
+            (this.$refs.picturesGrid as Record<string, any>).clientHeight >=
+          (this.$refs.picturesGrid as Record<string, any>).scrollHeight;
         const {
           cloudinaryNextPage,
           pexelsNextPage,
@@ -70,9 +75,9 @@ export default {
               const { status, data } = await this.onScrollFetchNextPage(
                 this.onScrollUrl,
                 {
-                  next_cursor: cloudinaryNextPage,
-                  pexels_next_page: pexelsNextPage,
-                  unsplash_next_page: unsplashNextPage,
+                  nextCursor: cloudinaryNextPage,
+                  pexelsNextPage: pexelsNextPage,
+                  unsplashNextPage: unsplashNextPage,
                 }
               );
               if (status !== 200) {
@@ -94,13 +99,15 @@ export default {
         }
       };
     },
-    async onScrollFetchNextPage(url, params) {
+    async onScrollFetchNextPage(url: string, params: Record<string, any>) {
       return axios.get(url, { params: { ...params } });
     },
-    OnScrollHandleResponse(data, url) {
+    OnScrollHandleResponse(data: Record<string, any>, url: string) {
       switch (url) {
         case cloudinaryListPicturesUrl: {
-          const picturesUrl = data.resources.map((file) => file.secure_url);
+          const picturesUrl = data.resources.map(
+            (file: Record<string, any>) => file.secure_url
+          );
           this.setNextPage({
             cloudinaryNextPage: data.next_cursor || undefined,
           });
@@ -109,21 +116,23 @@ export default {
         }
         case unsplashSearchUrl: {
           const picturesUrls = data.data.results.map(
-            (picture) => picture.urls.regular
+            (picture: Record<string, any>) => picture.urls.regular
           );
           // extract next page link from headers
           const nextPage = data.headers.link
             .split(", ")
-            .find((page) => page.includes('rel="next'))
+            .find((page: string) => page.includes('rel="next'))
             .replaceAll(/([<>;\s]+|rel="next")/g, "");
           this.setNextPage({ unsplashNextPage: nextPage });
           this.setPictures(picturesUrls);
           break;
         }
         case pexelsSearchUrl: {
-          const { next_page, photos } = data.data;
-          const picturesUrls = photos.map((photos) => photos.src.large);
-          this.setNextPage({ pexelsNextPage: next_page });
+          const { nextPage, photos } = data.data;
+          const picturesUrls = photos.map(
+            (photos: Record<string, any>) => photos.src.large
+          );
+          this.setNextPage({ pexelsNextPage: nextPage });
           this.setPictures(picturesUrls);
           break;
         }
@@ -132,7 +141,7 @@ export default {
           break;
       }
     },
-    async usePicture(url) {
+    async usePicture(url: string) {
       this.showSpinner();
       try {
         const { status } = await axios.post(uploadPictureUrl, {
@@ -167,7 +176,7 @@ export default {
   components: {
     Spinner,
   },
-};
+});
 </script>
 
 <style scoped>

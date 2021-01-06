@@ -11,5 +11,5 @@ export class SearchPicturesByKeywordDto {
 
   @IsOptional()
   @IsString()
-  unsplash_next_page: string;
+  unsplashNextPage: string;
 }

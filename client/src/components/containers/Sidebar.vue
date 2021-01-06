@@ -6,9 +6,12 @@
   </aside>
 </template>
 
-<script>
-import Tabs from "./Tabs";
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+
+import Tabs from "./Tabs.vue";
+
+export default defineComponent({
   data() {
     return {
       tabLinks: [
@@ -20,7 +23,7 @@ export default {
   components: {
     Tabs,
   },
-};
+});
 </script>
 
 <style scoped>

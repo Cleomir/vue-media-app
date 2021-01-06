@@ -27,12 +27,14 @@
   </div>
 </template>
 
-<script>
-import axios from "axios";
+<script lang="ts">
+import axios, { AxiosResponse } from "axios";
+import { defineComponent } from "vue";
 import { mapMutations } from "vuex";
 import PicturesGrid from "../PicturesGrid.vue";
 import { pexelsSearchUrl, unsplashSearchUrl } from "../../config";
-export default {
+
+export default defineComponent({
   data() {
     return {
       searchKeyword: "",
@@ -53,7 +55,7 @@ export default {
     clearSearchBar() {
       this.searchKeyword = "";
     },
-    selectStockSite(site) {
+    selectStockSite(site: string) {
       this.selectedStockButton = site;
     },
     async searchStockPictures() {
@@ -86,25 +88,27 @@ export default {
         }
       }
     },
-    mapSearchedPictures(responseData) {
+    mapSearchedPictures(responseData: AxiosResponse) {
       const { data, headers } = responseData;
       // Unsplash
       if (data.results) {
         const picturesUrls = data.results.map(
-          (picture) => picture.urls.regular
+          (picture: Record<string, any>) => picture.urls.regular
         );
         // extract next page link from headers
         const nextPage = headers.link
           .split(", ")
-          .find((page) => page.includes('rel="next'))
+          .find((page: string) => page.includes('rel="next'))
           .replaceAll(/([<>;\s]+|rel="next")/g, "");
         this.setNextPage({ unsplashNextPage: nextPage });
         this.setPictures(picturesUrls);
       } else if (data.photos) {
         // Pexels
-        const { next_page, photos } = data;
-        const picturesUrls = photos.map((photos) => photos.src.large);
-        this.setNextPage({ pexelsNextPage: next_page });
+        const { nextPage, photos } = data;
+        const picturesUrls = photos.map(
+          (photos: Record<string, any>) => photos.src.large
+        );
+        this.setNextPage({ pexelsNextPage: nextPage });
         this.setPictures(picturesUrls);
       }
     },
@@ -117,7 +121,7 @@ export default {
   components: {
     PicturesGrid,
   },
-};
+});
 </script>
 
 <style scoped>

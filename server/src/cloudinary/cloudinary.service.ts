@@ -47,7 +47,7 @@ export class CloudinaryService {
       listUploadedPicturesDto,
     );
     const response: any = await v2.api.resources({
-      next_cursor: listUploadedPicturesDto.next_cursor,
+      next_cursor: listUploadedPicturesDto.nextCursor,
     });
     this.logger.log(
       'Uploaded pictures listed',

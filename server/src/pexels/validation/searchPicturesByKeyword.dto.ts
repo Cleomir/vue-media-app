@@ -11,5 +11,5 @@ export class SearchPicturesByKeywordDto {
 
   @IsOptional()
   @IsString()
-  pexels_next_page: string;
+  pexelsNextPage: string;
 }

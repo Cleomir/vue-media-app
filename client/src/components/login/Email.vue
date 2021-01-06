@@ -16,8 +16,10 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
   data() {
     return {
       invalidEmail: false,
@@ -25,7 +27,7 @@ export default {
     };
   },
   methods: {
-    validateEmail(email) {
+    validateEmail(email: string) {
       return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(
         email
       );
@@ -40,7 +42,7 @@ export default {
       }
     },
   },
-};
+});
 </script>
 
 <style scoped>
